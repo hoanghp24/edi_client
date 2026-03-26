@@ -4,8 +4,9 @@ import { Form, Input, Button, Card, Typography, message } from "antd";
 import { MailOutlined, KeyOutlined, ArrowRightOutlined, GlobalOutlined, ScheduleOutlined, DeploymentUnitOutlined, NodeIndexOutlined } from "@ant-design/icons";
 import { Mail, Key, User, Lock } from "lucide-react";
 import "./Login.scss";
+import { ROUTES } from "../../routes/routes";
 
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -28,7 +29,7 @@ export const Login: React.FC = () => {
       
       if (success) {
         message.success("Login successful!");
-        navigate("/dashboard");
+        navigate(ROUTES.HOME);
       } else {
         message.error("Sai tài khoản hoặc mật khẩu! (Sử dụng: admin / admin)");
       }
