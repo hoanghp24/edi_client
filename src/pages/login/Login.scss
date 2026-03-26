@@ -26,7 +26,7 @@ $radius-base: 8px;
     inset: 0;
     background: 
       linear-gradient(90deg, rgba(2, 4, 10, 0.80) 0%, rgba(2, 4, 10, 0.6) 100%),
-      url('../assets/login-background.jpg') no-repeat center center fixed;
+      url('../../assets/login-background.jpg') no-repeat center center fixed;
     background-size: cover;
     opacity: 0.85;
     filter: grayscale(0.1) contrast(1.1) brightness(1.6) blur(2px);
