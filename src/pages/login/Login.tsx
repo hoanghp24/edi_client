@@ -11,29 +11,25 @@ import { useAuth } from "../../context/AuthContext";
 const { Title, Text, Paragraph } = Typography;
 
 export const Login: React.FC = () => {
-  const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const { login, loading, error } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = "Sign In | Action Composites Portal";
+    document.title = "Sign In | Shipping Plan";
   }, []);
 
-  const onFinish = (values: any) => {
-    setLoading(true);
+  const onFinish = async (values: any) => {
+    const { success, error: loginError } = await login({ 
+      username: values.username, 
+      password: values.password 
+    });
     
-    // Sử dụng tài khoản demo admin/admin từ AuthContext
-    setTimeout(() => {
-      const success = login(values.username, values.password);
-      setLoading(false);
-      
-      if (success) {
-        message.success("Login successful!");
-        navigate(ROUTES.HOME);
-      } else {
-        message.error("Sai tài khoản hoặc mật khẩu! (Sử dụng: admin / admin)");
-      }
-    }, 1500);
+    if (success) {
+      message.success("Login successful!");
+      navigate(ROUTES.HOME);
+    } else {
+      message.error(loginError || "Sai tài khoản hoặc mật khẩu!");
+    }
   };
 
   return (
