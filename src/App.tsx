@@ -11,7 +11,7 @@ export function App() {
         token: {
           colorPrimary: '#1677ff',
           fontFamily: "'Inter', -apple-system, sans-serif",
-          borderRadius: 4,
+          borderRadius: 8,
         },
         components: {
           Menu: {

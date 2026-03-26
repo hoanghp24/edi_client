@@ -7,10 +7,13 @@ import {
   Clock,
   Compass
 } from 'lucide-react';
+import { usePageTitle } from '../../hooks/usePageTitle';
 
 const { Title } = Typography;
 
 export const DashboardOverview = () => {
+  usePageTitle('Dashboard');
+
   return (
     <div style={{ padding: '0 24px' }}>
       <div style={{ marginBottom: 24 }}>

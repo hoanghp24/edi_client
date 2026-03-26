@@ -1,7 +1,10 @@
 import React from 'react';
 import { Card, Result } from 'antd';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 export const Placeholder = ({ title }: { title: string }) => {
+  usePageTitle(title);
+
   return (
     <Card 
       title={<span style={{ fontWeight: 'bold', fontSize: '18px' }}>{title}</span>} 

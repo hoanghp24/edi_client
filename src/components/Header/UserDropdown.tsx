@@ -43,11 +43,11 @@ export const UserDropdown: React.FC<UserDropdownProps> = ({ onLogout }) => {
         token: { 
           colorBgElevated: '#010409', 
           colorBorderSecondary: 'rgba(255,255,255,0.1)',
-          borderRadiusLG: 12,
+          borderRadiusLG: 8,
         },
         components: {
           Dropdown: { paddingBlock: 8, controlItemBgHover: 'rgba(177,186,196,0.12)' },
-          Menu: { itemColor: '#c9d1d9', itemHoverColor: '#c9d1d9', itemBorderRadius: 6 }
+          Menu: { itemColor: '#c9d1d9', itemHoverColor: '#c9d1d9', itemBorderRadius: 8 }
         }
       }}
     >
