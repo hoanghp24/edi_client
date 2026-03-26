@@ -9,6 +9,7 @@ import {
   Trash2,
   MoreVertical
 } from 'lucide-react';
+import { usePageTitle } from '../../hooks/usePageTitle';
 
 const { Title } = Typography;
 
@@ -35,6 +36,7 @@ const initialData: DataType[] = Array.from({ length: 50 }).map((_, i) => ({
 }));
 
 export const SerialShippingPlan = () => {
+  usePageTitle('Serial Shipping Plan');
   const [data, setData] = useState<DataType[]>(initialData);
   const containerRef = useRef<HTMLDivElement>(null);
 

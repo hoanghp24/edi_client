@@ -9,12 +9,15 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return localStorage.getItem('isAuthenticated') === 'true';
+  });
 
   // Authentication giả lập demo
   const login = (username: string, password: string) => {
     if (username === 'admin' && password === 'admin') {
       setIsAuthenticated(true);
+      localStorage.setItem('isAuthenticated', 'true');
       return true;
     }
     return false;
@@ -22,6 +25,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = () => {
     setIsAuthenticated(false);
+    localStorage.removeItem('isAuthenticated');
   };
 
   return (

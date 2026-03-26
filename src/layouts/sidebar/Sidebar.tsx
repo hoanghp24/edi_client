@@ -63,7 +63,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed }) => {
           <Globe size={24} style={{ color: "#4dabf7", flexShrink: 0 }} />
           {!collapsed && (
             <span style={{ fontWeight: 700, fontSize: 16, letterSpacing: "-0.5px", whiteSpace: "nowrap", transition: "opacity 0.3s", color: "#ffffff" }}>
-              Shipping Portal
+              Shipping Plan
             </span>
           )}
         </div>

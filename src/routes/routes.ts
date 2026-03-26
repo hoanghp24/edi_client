@@ -1,6 +1,6 @@
 export const ROUTES = {
   HOME: '/',
-  LOGIN: '/login',
+  LOGIN: '/sign-in',
   SHIPPING_PLAN: {
     SERIAL: '/shipping-plan/serial',
     SAMPLE: '/shipping-plan/sample',

@@ -1,4 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --animate-fade-in: fade-in 1s ease-out;
+  --animate-slide-in-left: slide-in-left 1s cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-slide-in-right: slide-in-right 1s cubic-bezier(0.16, 1, 0.3, 1);
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slide-in-left {
+    from { opacity: 0; transform: translateX(-40px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes slide-in-right {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+}
 
 body {
   margin: 0;
@@ -13,25 +33,57 @@ body {
   box-sizing: inherit;
 }
 
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
+/* MacBook-style Scrollbar (Enforced Globally) */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
   background: transparent;
 }
 
-::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.15);
-  border-radius: 3px;
+*::-webkit-scrollbar-track {
+  background: transparent !important;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.3);
+*::-webkit-scrollbar-thumb {
+  background: rgba(155, 155, 155, 0.4);
+  background-clip: padding-box;
+  border: 2px solid transparent; 
+  border-radius: 8px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 100, 100, 0.7);
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+
+@theme {
+  --animate-in: in 0.5s ease-out;
+  --animate-fade-in: fade-in 1s ease-out;
+  --animate-slide-in-from-left: slide-in-from-left 1s ease-out;
+  --animate-slide-in-from-right: slide-in-from-right 1s ease-out;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slide-in-from-left {
+    from { transform: translateX(-20px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+  @keyframes slide-in-from-right {
+    from { transform: translateX(20px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  /* Core project spacing & scale */
+  --spacing-250: 62.5rem; /* 1000px */
+  --spacing-350: 87.5rem; /* 1400px */
+  --radius-base: 0.5rem; /* 8px */
+  --z-index-1: 1;
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+  scrollbar-color: rgba(155, 155, 155, 0.4) transparent;
 }
