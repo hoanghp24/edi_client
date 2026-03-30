@@ -3,38 +3,26 @@ import { Routes, Route, Navigate } from "react-router-dom";
 
 import { Login } from "../pages/login/Login";
 import { useAuth } from "../context/AuthContext";
-import { DashboardLayout } from "../layouts/DashboardLayout";
+import { MainLayout } from "../layouts/MainLayout";
 import { DashboardOverview } from "../pages/dashboard/DashboardOverview";
 import { Placeholder } from "../pages/Placeholder";
 
 import { PrivateRoute } from "./PrivateRoute";
 import { PublicRoute } from "./PublicRoute";
 import { ROUTES } from "./routes";
-import { SerialShippingPlan } from "../pages/shipping-plan/SerialShippingPlan";
 
 export const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
 
   return (
     <Routes>
-      {/* Root Route: Switch between Login and Dashboard Home depending on Auth */}
-      <Route 
-        path="/" 
-        element={
-          isAuthenticated ? (
-            <DashboardLayout />
-          ) : (
-            <Login />
-          )
-        }
-      >
+      <Route path="/" element={isAuthenticated ? <MainLayout /> : <Login />}>
         <Route index element={isAuthenticated ? <DashboardOverview /> : null} />
       </Route>
 
-      {/* Internal Dashboard Routes (All Root-Relative) */}
       <Route element={<PrivateRoute />}>
-        <Route element={<DashboardLayout />}>
-          <Route path={ROUTES.SHIPPING_PLAN.SERIAL} element={<SerialShippingPlan />} />
+        <Route element={<MainLayout />}>
+          <Route path={ROUTES.SHIPPING_PLAN.SERIAL} element={<Placeholder title="Serial Shipping Plan" />} />
           <Route path={ROUTES.SHIPPING_PLAN.SAMPLE} element={<Placeholder title="Sample Shipping Plan" />} />
 
           <Route path={ROUTES.TRACKING.MODE_AIR} element={<Placeholder title="Tracking By Ship Mode (AIR)" />} />
@@ -50,6 +38,10 @@ export const AppRoutes = () => {
           <Route path={ROUTES.MASTER_DATA.PART_ADD} element={<Placeholder title="Master Data Manual Add" />} />
           <Route path={ROUTES.MASTER_DATA.PART_IMPORT} element={<Placeholder title="Master Data Import by file" />} />
         </Route>
+      </Route>
+
+      <Route element={<PublicRoute />}>
+        <Route path={ROUTES.LOGIN} element={<Login />} />
       </Route>
 
       <Route path="*" element={<Navigate to={ROUTES.HOME} replace />} />

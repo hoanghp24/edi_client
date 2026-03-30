@@ -5,8 +5,8 @@ import { MailOutlined, KeyOutlined, ArrowRightOutlined, GlobalOutlined, Schedule
 import { Mail, Key, User, Lock } from "lucide-react";
 import "./Login.scss";
 import { ROUTES } from "../../routes/routes";
-
 import { useAuth } from "../../context/AuthContext";
+import vacLogo from "../../assets/VAC_Logo.ico";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -66,7 +66,7 @@ export const Login: React.FC = () => {
         <div className="login-side-form">
           <Card className="login-card">
             <div className="login-logo-container">
-              <img src="/VAC_Logo.ico" alt="Action Composites" className="login-brand-icon" />
+              <img src={vacLogo} alt="Action Composites" className="login-brand-icon" />
             </div>
 
             <Title className="login-title-small">WELCOME BACK</Title>

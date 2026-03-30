@@ -1,0 +1,57 @@
+@use '../../styles/theme' as *;
+
+.dashboard-sider {
+  height: 100vh;
+  transition: $trans-sidebar !important;
+  background: $navy-dark !important;
+  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+
+  .sider-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    z-index: 11;
+  }
+
+  .logo-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+    gap: 12px;
+    height: $header-height;
+    
+    .logo-image {
+      height: 40px;
+      width: 40px;
+      object-fit: contain;
+    }
+
+    .brand-text {
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+      text-transform: uppercase;
+
+      .brand-accent {
+        color: $primary-red;
+      }
+    }
+    
+    &.collapsed {
+      flex-direction: column;
+    }
+  }
+
+  .menu-list-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 12px 0;
+  }
+}

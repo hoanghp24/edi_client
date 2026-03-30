@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Popover, Tooltip } from "antd";
 import { ChevronRight } from "lucide-react";
 import { MenuItem } from "../../types/menu";
-import "./SidebarMenu.css";
+import "./SidebarMenu.scss";
 
 export const SidebarPopover: React.FC<{
   item: MenuItem;
@@ -70,7 +70,7 @@ export const SidebarMenuItem: React.FC<{
         <span className="menu-label">{item.label}</span>
         {hasChildren && !collapsed && (
           <span className={`menu-arrow ${isOpen ? "open" : ""}`}>
-            <ChevronRight size={14} />
+            <ChevronRight size={18} />
           </span>
         )}
       </div>
