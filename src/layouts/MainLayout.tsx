@@ -19,9 +19,9 @@ export const MainLayout = () => {
   };
 
   return (
-    <Layout className="main-layout">
+    <Layout className={`main-layout ${collapsed ? 'sidebar-collapsed' : ''}`}>
       <Sidebar collapsed={collapsed} />
-      <Layout>
+      <Layout className="layout-right">
         <Header 
           collapsed={collapsed} 
           setCollapsed={setCollapsed} 

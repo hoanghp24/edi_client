@@ -4,14 +4,20 @@
   min-height: 100vh;
   background-color: $bg-main;
 
-  .ant-layout-sider {
-    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.05);
-    z-index: 100;
+  .layout-right {
+    margin-left: 280px;
+    transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 100vh;
+  }
+
+  &.sidebar-collapsed .layout-right {
+    margin-left: 80px;
   }
 
   .main-content {
+    margin-top: 64px; // Account for fixed header height
     padding: 24px;
     background-color: $bg-main;
-    min-height: 280px;
+    min-height: calc(100vh - 64px);
   }
 }

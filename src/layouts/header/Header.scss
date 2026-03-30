@@ -1,6 +1,10 @@
 @use '../../styles/theme' as *;
 
 .dashboard-header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 280px;
   padding: 0 24px !important;
   background: $bg-white !important;
   display: flex !important;
@@ -11,6 +15,7 @@
   transition: $trans-main !important;
   box-shadow: $shadow-sm !important;
   overflow: hidden !important;
+  z-index: 999;
 
   .header-left {
     display: flex;
@@ -63,4 +68,8 @@
     align-items: center;
     gap: 16px;
   }
+}
+
+.sidebar-collapsed .dashboard-header {
+  left: 80px !important;
 }

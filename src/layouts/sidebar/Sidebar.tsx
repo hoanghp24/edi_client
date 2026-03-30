@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Layout } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 import { menuItems } from "../menuConfig";
@@ -30,6 +30,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed }) => {
   const [openKeys, setOpenKeys] = useState<Set<string>>(
     () => new Set(findParentKeys(menuItems as MenuItem[], location.pathname))
   );
+
+  useEffect(() => {
+    const parentKeys = findParentKeys(menuItems as MenuItem[], location.pathname);
+    if (parentKeys.length > 0) {
+      setOpenKeys((prev) => {
+        const next = new Set(prev);
+        parentKeys.forEach((key) => next.add(key));
+        return next;
+      });
+    }
+  }, [location.pathname]);
 
   const toggleOpen = (key: string) => {
     setOpenKeys((prev) => {

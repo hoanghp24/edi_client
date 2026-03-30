@@ -2,7 +2,6 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import { Login } from "../pages/login/Login";
-import { useAuth } from "../context/AuthContext";
 import { MainLayout } from "../layouts/MainLayout";
 import { DashboardOverview } from "../pages/dashboard/DashboardOverview";
 import { Placeholder } from "../pages/Placeholder";
@@ -10,23 +9,27 @@ import { Placeholder } from "../pages/Placeholder";
 import { PrivateRoute } from "./PrivateRoute";
 import { PublicRoute } from "./PublicRoute";
 import { ROUTES } from "./routes";
+import { useAuth } from "../context/AuthContext";
 
 export const AppRoutes = () => {
-  const { isAuthenticated } = useAuth();
+  const { loading } = useAuth();
+
+  // Show a stable background during auth state transitions to prevent white flashes
+  if (loading) {
+    return <div style={{ background: '#0f172a', height: '100vh', width: '100vw' }} />;
+  }
 
   return (
     <Routes>
-      <Route path="/" element={isAuthenticated ? <MainLayout /> : <Login />}>
-        <Route index element={isAuthenticated ? <DashboardOverview /> : null} />
-      </Route>
-
       <Route element={<PrivateRoute />}>
         <Route element={<MainLayout />}>
+          <Route index element={<DashboardOverview />} />
+          
           <Route path={ROUTES.SHIPPING_PLAN.SERIAL} element={<Placeholder title="Serial Shipping Plan" />} />
           <Route path={ROUTES.SHIPPING_PLAN.SAMPLE} element={<Placeholder title="Sample Shipping Plan" />} />
 
-          <Route path={ROUTES.TRACKING.MODE_AIR} element={<Placeholder title="Tracking By Ship Mode (AIR)" />} />
-          <Route path={ROUTES.TRACKING.MODE_SEA} element={<Placeholder title="Tracking By Ship Mode (SEA)" />} />
+          <Route path={ROUTES.TRACKING.MODE_AIR} element={<Placeholder title="Tracking Ship AIR" />} />
+          <Route path={ROUTES.TRACKING.MODE_SEA} element={<Placeholder title="Tracking Ship SEA" />} />
           <Route path={ROUTES.TRACKING.STATUS_TRANSIT} element={<Placeholder title="Tracking In Transit" />} />
           <Route path={ROUTES.TRACKING.STATUS_ARRIVED} element={<Placeholder title="Tracking Arrived" />} />
 

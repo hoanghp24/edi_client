@@ -1,11 +1,15 @@
 @use '../../styles/theme' as *;
 
 .dashboard-sider {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
   height: 100vh;
   transition: $trans-sidebar !important;
   background: $navy-dark !important;
   box-shadow: 4px 0 12px rgba(0, 0, 0, 0.15);
-  z-index: 100;
+  z-index: 1000;
 
   .sider-container {
     display: flex;
