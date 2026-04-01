@@ -1,17 +1,17 @@
-@use '../styles/theme' as *;
+@use '../../styles/theme' as *;
 
 .main-layout {
   min-height: 100vh;
   background-color: $bg-main;
 
   .layout-right {
-    margin-left: 280px;
-    transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-left: $sidebar-width;
+    transition: $trans-sidebar;
     min-height: 100vh;
   }
 
   &.sidebar-collapsed .layout-right {
-    margin-left: 80px;
+    margin-left: $sidebar-collapsed-width;
   }
 
   .main-content {

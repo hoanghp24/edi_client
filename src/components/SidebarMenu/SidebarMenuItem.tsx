@@ -1,24 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import { Popover, Tooltip } from "antd";
 import { ChevronRight } from "lucide-react";
 import { MenuItem } from "../../types/menu";
 import "./SidebarMenu.scss";
 
-export const SidebarPopover: React.FC<{
+const SidebarPopoverContent: React.FC<{
   item: MenuItem;
   selectedKey: string;
   onNavigate: (key: string) => void;
   level: number;
-}> = ({ item, selectedKey, onNavigate, level }) => {
+}> = React.memo(({ item, selectedKey, onNavigate, level }) => {
   const [popoverOpenKeys, setPopoverOpenKeys] = useState<Set<string>>(new Set());
 
-  const togglePopoverOpen = (key: string) => {
+  const togglePopoverOpen = useCallback((key: string) => {
     setPopoverOpenKeys((prev) => {
       const next = new Set(prev);
-      next.has(key) ? next.delete(key) : next.add(key);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
       return next;
     });
-  };
+  }, []);
 
   return (
     <div className="sidebar-popover-container">
@@ -39,7 +40,7 @@ export const SidebarPopover: React.FC<{
       </ul>
     </div>
   );
-};
+});
 
 export const SidebarMenuItem: React.FC<{
   item: MenuItem;
@@ -49,19 +50,28 @@ export const SidebarMenuItem: React.FC<{
   toggleOpen: (key: string) => void;
   onNavigate: (key: string) => void;
   level?: number;
-}> = ({ item, selectedKey, collapsed, openKeys, toggleOpen, onNavigate, level = 1 }) => {
-  const hasChildren = item.children && item.children.length > 0;
+}> = React.memo(({ item, selectedKey, collapsed, openKeys, toggleOpen, onNavigate, level = 1 }) => {
+  const hasChildren = useMemo(() => !!(item.children && item.children.length > 0), [item.children]);
   const isOpen = openKeys.has(item.key);
   const isActive = selectedKey === item.key;
   
-  const isChildActive = (menuItem: MenuItem): boolean => 
-    menuItem.key === selectedKey || (menuItem.children?.some(isChildActive) ?? false);
-  const isParentActive = hasChildren && isChildActive(item);
+  const isParentActive = useMemo(() => {
+    if (!hasChildren) return false;
+    const checkChild = (menuItem: MenuItem): boolean => 
+      menuItem.key === selectedKey || (menuItem.children?.some(checkChild) ?? false);
+    return checkChild(item);
+  }, [item, selectedKey, hasChildren]);
 
-  const handleClick = () => hasChildren ? toggleOpen(item.key) : onNavigate(item.key);
+  const handleClick = useCallback(() => {
+    if (hasChildren) {
+      toggleOpen(item.key);
+    } else {
+      onNavigate(item.key);
+    }
+  }, [hasChildren, item.key, toggleOpen, onNavigate]);
 
   const itemContent = (
-    <li className="sidebar-menu-item">
+    <li className={`sidebar-menu-item level-${level}`}>
       <div
         className={`sidebar-menu-item-title ${isActive ? "active" : ""} ${isParentActive ? "parent-active" : ""}`}
         onClick={handleClick}
@@ -96,37 +106,30 @@ export const SidebarMenuItem: React.FC<{
     </li>
   );
 
+  // Top-level collapsed state with Tooltip/Popover
   if (collapsed && level === 1) {
     if (hasChildren) {
       return (
         <Popover
           placement="rightTop"
-          content={<SidebarPopover item={item} selectedKey={selectedKey} onNavigate={onNavigate} level={level} />}
+          content={<SidebarPopoverContent item={item} selectedKey={selectedKey} onNavigate={onNavigate} level={level} />}
           trigger="hover"
           rootClassName="custom-sidebar-popover"
-          overlayClassName="custom-sidebar-popover"
           mouseEnterDelay={0.1}
           arrow={false}
-          overlayInnerStyle={{
-            background: "#001529",
-            padding: "8px 0",
-            borderRadius: 8,
-            border: "1px solid rgba(255,255,255,0.1)",
-            boxShadow: "0 6px 16px 0 rgba(0,0,0,0.4)",
-            minWidth: 220,
-          }}
         >
           {itemContent}
         </Popover>
       );
-    } else {
-      return (
-        <Tooltip placement="right" title={item.label} color="#001529">
-          {itemContent}
-        </Tooltip>
-      );
     }
+    
+    return (
+      <Tooltip placement="right" title={item.label} color="#e30613">
+        {itemContent}
+      </Tooltip>
+    );
   }
 
   return itemContent;
-};
+});
+

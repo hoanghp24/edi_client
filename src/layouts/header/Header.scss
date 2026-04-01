@@ -4,7 +4,7 @@
   position: fixed;
   top: 0;
   right: 0;
-  left: 280px;
+  left: $sidebar-width;
   padding: 0 24px !important;
   background: $bg-white !important;
   display: flex !important;
@@ -12,7 +12,7 @@
   align-items: center !important;
   border-bottom: 1px solid #eef2f6 !important;
   height: $header-height !important;
-  transition: $trans-main !important;
+  transition: $trans-sidebar !important;
   box-shadow: $shadow-sm !important;
   overflow: hidden !important;
   z-index: 999;
@@ -71,5 +71,5 @@
 }
 
 .sidebar-collapsed .dashboard-header {
-  left: 80px !important;
+  left: $sidebar-collapsed-width !important;
 }

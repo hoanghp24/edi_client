@@ -24,9 +24,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 16px;
     gap: 12px;
     height: $header-height;
+    transform: translateX(-10px);
     
     .logo-image {
       height: 40px;
@@ -47,8 +47,11 @@
       }
     }
     
-    &.collapsed {
-      flex-direction: column;
+    &.sidebar-collapsed {
+      padding: 0;
+      justify-content: center;
+      transform: translateX(0);
+      height: $header-height !important;
     }
   }
 
@@ -57,5 +60,12 @@
     overflow-y: auto;
     overflow-x: hidden;
     padding: 12px 0;
+
+    /* Hide scrollbar */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
 }

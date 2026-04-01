@@ -1,10 +1,10 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './index.css'
+import './styles/global.scss'
 import App from './App'
 
 import { Provider } from 'react-redux'
-import { store } from './store/store'
+import { store } from './state/store'
 import { injectStore } from './api/apiClient'
 
 // Inject store to apiClient to avoid circular dependency

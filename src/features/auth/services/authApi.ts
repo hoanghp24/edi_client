@@ -1,6 +1,6 @@
 import apiClient from '../../../api/apiClient';
 import { AuthResponse, LoginRequest } from '../../../types/auth';
-import { API_ENDPOINTS } from '../../../constant/apiEndpoints';
+import { API_ENDPOINTS } from '../../../constants/apiEndpoints';
 
 export const authApi = {
   login: async (credentials: LoginRequest): Promise<AuthResponse> => {

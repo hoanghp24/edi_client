@@ -11,15 +11,20 @@
   "dependencies": {
     "@ant-design/icons": "^6.1.0",
     "@reduxjs/toolkit": "^2.11.2",
+    "@tanstack/react-query": "^5.96.0",
+    "@tanstack/react-query-devtools": "^5.96.0",
     "antd": "^6.3.2",
     "axios": "^1.13.6",
+    "framer-motion": "^12.38.0",
     "lucide-react": "^0.577.0",
+    "nprogress": "^0.2.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.13.1"
   },
   "devDependencies": {
+    "@types/nprogress": "^0.2.3",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.4",

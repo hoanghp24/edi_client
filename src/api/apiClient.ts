@@ -1,13 +1,10 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { storage } from '../utils/storage';
 import { AuthResponse } from '../types/auth';
-import { API_ENDPOINTS } from '../constant/apiEndpoints';
+import { API_ENDPOINTS } from '../constants/apiEndpoints';
 
 let store: any;
 
-/**
- * Inject store to break circular dependency (store -> slice -> api -> apiClient -> store)
- */
 export const injectStore = (_store: any) => {
   store = _store;
 };

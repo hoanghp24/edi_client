@@ -1,6 +1,7 @@
 export const ROUTES = {
   HOME: '/',
-  LOGIN: '/login',
+  LOGIN: '/',
+  DASHBOARD: '/dashboard',
   SHIPPING_PLAN: {
     SERIAL: '/shipping-plan/serial',
     SAMPLE: '/shipping-plan/sample',
@@ -18,5 +19,6 @@ export const ROUTES = {
     PART_OVERVIEW: '/master-data/part/overview',
     PART_ADD: '/master-data/part/add',
     PART_IMPORT: '/master-data/part/import',
-  }
+  },
+  SPLASH_GALLERY: '/splash-gallery',
 };

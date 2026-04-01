@@ -1,6 +1,7 @@
 import React from "react";
 import { LayoutDashboard, CalendarRange, MapPin, Database, Info } from "lucide-react";
 import { ROUTES } from "../routes";
+import { MenuItem } from "../types/menu";
 
 export const MENU_KEYS = {
   SHIPPING_PLAN: "shipping-plan",
@@ -13,11 +14,10 @@ export const MENU_KEYS = {
 
 const iconSize = 18;
 
-import { MenuItem } from "../types/menu";
 
 export const menuItems: MenuItem[] = [
   {
-    key: ROUTES.HOME,
+    key: ROUTES.DASHBOARD,
     icon: <LayoutDashboard size={iconSize} />,
     label: "Dashboard",
   },

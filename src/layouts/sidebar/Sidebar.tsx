@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Layout } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
-import { menuItems } from "../menuConfig";
+import { menuItems } from "../../constants/menuConfig";
 import { MenuItem } from "../../types/menu";
 import { SidebarMenuItem } from "../../components/SidebarMenu/SidebarMenuItem";
-import vacLogo from "../../assets/VAC_Logo.ico";
+import vacLogo from "../../assets/VAC_Logo.png";
 
 const { Sider } = Layout;
 
@@ -57,7 +57,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed }) => {
       collapsed={collapsed}
       theme="dark"
       width={280}
-      collapsedWidth={80}
+      collapsedWidth={64}
       className="dashboard-sider"
     >
       <div className="sider-container">

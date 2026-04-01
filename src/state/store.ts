@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import authenticationReducer from '../features/authentication/authenticationSlice';
+import authReducer from '../features/auth/authSlice';
+import shippingReducer from '../features/shipping/shippingSlice';
 
 export const store = configureStore({
   reducer: {
-    auth: authenticationReducer,
+    auth: authReducer,
+    shipping: shippingReducer, // Shipping feature state globally registered here
   },
   devTools: import.meta.env.MODE !== 'production',
 });

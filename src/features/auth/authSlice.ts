@@ -2,7 +2,7 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { User, AuthResponse, LoginRequest } from '../../types/auth';
 import { authApi } from './services/authApi';
 import { storage } from '../../utils/storage';
-import { HTTP_ERROR_MESSAGES, DEFAULT_ERROR_MESSAGE } from '../../constant/errorMessages';
+import { HTTP_ERROR_MESSAGES, DEFAULT_ERROR_MESSAGE } from '../../constants/errorMessages';
 
 interface AuthState {
   user: User | null;
@@ -51,7 +51,7 @@ export const logoutThunk = createAsyncThunk(
   }
 );
 
-const authenticationSlice = createSlice({
+const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
@@ -96,5 +96,5 @@ const authenticationSlice = createSlice({
   },
 });
 
-export const { forceLogout, clearError, updateUser } = authenticationSlice.actions;
-export default authenticationSlice.reducer;
+export const { forceLogout, clearError, updateUser } = authSlice.actions;
+export default authSlice.reducer;

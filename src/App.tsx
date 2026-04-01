@@ -1,18 +1,21 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { queryClient } from './api/queryClient';
 import { AppRoutes } from './routes/AppRoutes';
-import { AuthProvider } from './context/AuthContext';
 import { ConfigProvider } from 'antd';
 import { themeConfig } from './theme/themeConfig';
 
 export function App() {
   return (
     <ConfigProvider theme={themeConfig}>
-      <AuthProvider>
+      <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <AppRoutes />
         </BrowserRouter>
-      </AuthProvider>
+        <ReactQueryDevtools initialIsOpen={false} position="right" />
+      </QueryClientProvider>
     </ConfigProvider>
   );
 }

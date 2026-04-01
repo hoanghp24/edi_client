@@ -7,6 +7,8 @@ export interface User {
   reportTo: string | null;
   department: string | null;
   userGroup: string | null;
+  role?: string;
+  permissions?: string[];
 }
 
 export interface AuthResponse {

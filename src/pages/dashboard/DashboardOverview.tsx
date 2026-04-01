@@ -21,6 +21,16 @@ const { Title, Text } = Typography;
 export const DashboardOverview = () => {
   usePageTitle('Dashboard');
 
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    // Giả lập call API mất 1.5s
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
   const dataSource = Array.from({ length: 30 }).map((_, i) => ({
     key: i,
     id: `SHP-2024-${1000 + i}`,
@@ -82,7 +92,7 @@ export const DashboardOverview = () => {
       {/* Top Stats */}
       <Row gutter={[16, 16]}>
         <Col xs={24} sm={12} lg={6}>
-          <Card bordered={false} className="status-card">
+          <Card bordered={false} className="status-card" loading={isLoading}>
             <Statistic
               title={<Text type="secondary">Total Shipments</Text>}
               value={1240}
@@ -92,7 +102,7 @@ export const DashboardOverview = () => {
           </Card>
         </Col>
         <Col xs={24} sm={12} lg={6}>
-          <Card bordered={false} className="status-card">
+          <Card bordered={false} className="status-card" loading={isLoading}>
             <Statistic
               title={<Text type="secondary">In Transit</Text>}
               value={425}
@@ -102,7 +112,7 @@ export const DashboardOverview = () => {
           </Card>
         </Col>
         <Col xs={24} sm={12} lg={6}>
-          <Card bordered={false} className="status-card">
+          <Card bordered={false} className="status-card" loading={isLoading}>
             <Statistic
               title={<Text type="secondary">On Time Rate</Text>}
               value={94.2}
@@ -113,7 +123,7 @@ export const DashboardOverview = () => {
           </Card>
         </Col>
         <Col xs={24} sm={12} lg={6}>
-          <Card bordered={false} className="status-card">
+          <Card bordered={false} className="status-card" loading={isLoading}>
             <Statistic
               title={<Text type="secondary">Pending Action</Text>}
               value={15}
@@ -134,6 +144,7 @@ export const DashboardOverview = () => {
             bodyStyle={{ padding: 0 }}
           >
             <Table 
+              loading={isLoading}
               dataSource={dataSource} 
               columns={columns} 
               pagination={false}
