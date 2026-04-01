@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Card, Typography } from "antd";
 import { ScheduleOutlined, DeploymentUnitOutlined, NodeIndexOutlined } from "@ant-design/icons";
+import { motion } from "framer-motion";
 import "./Login.scss";
 import vacLogo from "../../assets/VAC_Logo.png";
 import { LoginForm } from "../../features/auth/components/LoginForm";
@@ -15,7 +16,12 @@ export const Login: React.FC = () => {
   return (
     <div className="login-page">
       <div className="login-page-desktop">
-        <div className="login-side-info">
+        <motion.div 
+          className="login-side-info"
+          initial={{ opacity: 0, x: -60 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1.0, ease: "circOut" }}
+        >
           <Text className="login-badge-official">ACTION COMPOSITES HIGHTECH INDUSTRIES</Text>
           <Title className="login-main-title">
             SHIPPING <span className="login-highlight-red">PLAN</span>
@@ -39,9 +45,14 @@ export const Login: React.FC = () => {
               <Text className="login-pillar-text">SUPPLY CHAIN EXCELLENCE</Text>
             </div>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="login-side-form">
+        <motion.div 
+          className="login-side-form"
+          initial={{ opacity: 0, x: 80 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1.0, delay: 0.15, ease: "circOut" }}
+        >
           <Card className="login-card">
             <div className="login-logo-container">
               <img src={vacLogo} alt="Action Composites" className="login-brand-icon" />
@@ -56,7 +67,7 @@ export const Login: React.FC = () => {
               <Text className="login-footer-text">© 2026 ACTION COMPOSITES HIGHTECH INDUSTRIES</Text>
             </div>
           </Card>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

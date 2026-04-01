@@ -2,6 +2,7 @@ import React from "react";
 import { Form, Input, Button, message, Checkbox } from "antd";
 import { User, Lock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { motion, Variants } from "framer-motion";
 import { useAuth } from "../../../hooks/useAuth";
 import { ROUTES } from "../../../routes/routes";
 import { storage } from "../../../utils/storage";
@@ -24,6 +25,7 @@ export const LoginForm: React.FC = () => {
       message.error(loginError || "Invalid username or password!");
     }
   };
+
 
   return (
     <Form 
@@ -49,10 +51,15 @@ export const LoginForm: React.FC = () => {
         <Checkbox style={{ color: "#475569", fontSize: '14px' }}>Remember me</Checkbox>
       </Form.Item>
 
-      <Form.Item style={{ marginBottom: 0 }}>
-        <Button type="primary" htmlType="submit" className="login-submit-btn" block loading={loading}>
-          Sign In
-        </Button>
+      <Form.Item style={{ marginBottom: 0, marginTop: 16 }}>
+        <motion.div
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+        >
+          <Button type="primary" htmlType="submit" className="login-submit-btn" block loading={loading}>
+            Sign In
+          </Button>
+        </motion.div>
       </Form.Item>
     </Form>
   );
