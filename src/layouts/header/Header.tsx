@@ -2,17 +2,10 @@ import React from "react";
 import { Layout, Button, Typography } from "antd";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { UserDropdown } from "../../components/Header/UserDropdown";
+import "./Header.scss";
 
 const { Header: AntHeader } = Layout;
 const { Text } = Typography;
-
-interface HeaderProps {
-  collapsed: boolean;
-  setCollapsed: (collapsed: boolean) => void;
-  onLogout: () => void;
-}
-
-import "./Header.scss";
 
 interface HeaderProps {
   collapsed: boolean;
@@ -42,7 +35,7 @@ export const Header: React.FC<HeaderProps> = ({ collapsed, setCollapsed, onLogou
         </div>
       </div>
       
-      <div className="header-right">
+      <div className="header-right" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
         <UserDropdown onLogout={onLogout} />
       </div>
     </AntHeader>

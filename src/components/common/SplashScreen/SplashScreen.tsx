@@ -40,7 +40,7 @@ export const SplashScreen: React.FC = () => {
           className="brand-reveal"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.8 }}
+          transition={{ delay: 0.8, duration: 1.5, ease: "easeOut" }}
         >
           <h1 className="brand-name">
             SHIPPING <span className="highlight">PLAN</span>

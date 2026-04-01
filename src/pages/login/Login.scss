@@ -7,7 +7,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: $navy-dark;
+  background-color: #02040a;
 
   &::before {
     content: '';
@@ -165,7 +165,7 @@
     }
 
     .login-title-small {
-      color: $navy-dark !important;
+      color: #0f172a !important;
       font-size: 25px !important;
       font-weight: 700 !important;
       margin-bottom: 8px !important;
@@ -229,7 +229,7 @@
         background: linear-gradient(135deg, $primary-red 0%, $hover-red 100%) !important;
         color: #ffffff !important;
         border: none !important;
-        margin-top: 16px !important;
+        margin-top: 10px !important;
         box-shadow: 0 10px 25px rgba(227, 6, 19, 0.35) !important;
 
         &:hover {

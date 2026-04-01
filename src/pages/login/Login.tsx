@@ -18,9 +18,9 @@ export const Login: React.FC = () => {
       <div className="login-page-desktop">
         <motion.div 
           className="login-side-info"
-          initial={{ opacity: 0, x: -60 }}
+          initial={{ opacity: 0, x: -150 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1.0, ease: "circOut" }}
+          transition={{ duration: 0.8, ease: "circOut" }}
         >
           <Text className="login-badge-official">ACTION COMPOSITES HIGHTECH INDUSTRIES</Text>
           <Title className="login-main-title">
@@ -49,9 +49,9 @@ export const Login: React.FC = () => {
 
         <motion.div 
           className="login-side-form"
-          initial={{ opacity: 0, x: 80 }}
+          initial={{ opacity: 0, x: 150 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1.0, delay: 0.15, ease: "circOut" }}
+          transition={{ duration: 0.8, ease: "circOut" }}
         >
           <Card className="login-card">
             <div className="login-logo-container">

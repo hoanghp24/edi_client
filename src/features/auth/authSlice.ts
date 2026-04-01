@@ -13,12 +13,12 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  user: storage.getUserData(),
-  accessToken: storage.getAccessToken(),
-  refreshToken: storage.getRefreshToken(),
+  user: null,
+  accessToken: null,
+  refreshToken: null,
   loading: false,
   error: null,
-  isAuthenticated: !!storage.getAccessToken(),
+  isAuthenticated: false,
 };
 
 export const logoutThunk = createAsyncThunk(

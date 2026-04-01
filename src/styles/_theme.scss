@@ -1,20 +1,19 @@
-// BRAND COLORS
+// BRAND COLORS (Absolute)
 $primary-red: #e30613;
 $hover-red: #c40510;
-$navy-dark: #0f172a;
-$navy-light: #1e293b;
 
-// NEUTRALS
+// THEME-AWARE VARIABLES (Static Light Theme)
 $bg-main: #f1f5f9;
-$bg-white: #ffffff;
+$bg-card: #ffffff;
 $text-main: #0f172a;
 $text-secondary: #475569;
 $text-muted: #94a3b8;
 $text-light: #ffffff;
 $border-color: #e2e8f0;
 
-// COMPONENT SPECIFIC
+// SIDEBAR (Always dark-ish as per user preference)
 $sidebar-bg: #0f172a;
+$sidebar-hover: rgba(255, 255, 255, 0.08);
 
 // DESIGN TOKENS
 $radius-base: 8px;

@@ -5,12 +5,12 @@
   top: 0;
   right: 0;
   left: $sidebar-width;
-  padding: 0 24px !important;
-  background: $bg-white !important;
+  padding: 0 16px !important;
+  background: $bg-card !important;
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
-  border-bottom: 1px solid #eef2f6 !important;
+  border-bottom: 1px solid $border-color !important;
   height: $header-height !important;
   transition: $trans-sidebar !important;
   box-shadow: $shadow-sm !important;
@@ -46,7 +46,7 @@
       .brand-title {
         font-weight: 800;
         font-size: 16px;
-        color: #1e293b;
+        color: $text-main;
         letter-spacing: -0.2px;
 
         .brand-red {

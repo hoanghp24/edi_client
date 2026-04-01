@@ -4,29 +4,8 @@ import { AuthResponse } from '../types/auth';
 import { API_ENDPOINTS } from '../constants/apiEndpoints';
 import { forceLogout } from '../features/auth/authSlice';
 import { AppStore } from '../state/store';
-
 import { HTTP_ERROR_MESSAGES, DEFAULT_ERROR_MESSAGE } from '../constants/errorMessages';
-import NProgress from 'nprogress';
-import 'nprogress/nprogress.css';
-
-// NProgress configuration
-NProgress.configure({ showSpinner: false, speed: 400, minimum: 0.1 });
-
-// Variable to track active requests for NProgress
-let activeRequests = 0;
-
-const startProgress = () => {
-  if (activeRequests === 0) NProgress.start();
-  activeRequests++;
-};
-
-const stopProgress = () => {
-  activeRequests--;
-  if (activeRequests <= 0) {
-    activeRequests = 0;
-    NProgress.done();
-  }
-};
+import { startProgress, stopProgress } from '../utils/progress';
 
 // Override Axios methods to reflect data unpacking in the response interceptor
 interface CustomAxiosInstance extends AxiosInstance {

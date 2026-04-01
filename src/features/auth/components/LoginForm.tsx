@@ -12,8 +12,6 @@ export const LoginForm: React.FC = () => {
   const navigate = useNavigate();
 
   const onFinish = async (values: any) => {
-    storage.setPersistSession(values.remember);
-
     const { success, error: loginError } = await login({ 
       username: values.username, 
       password: values.password 
@@ -36,19 +34,14 @@ export const LoginForm: React.FC = () => {
       size="large"
       initialValues={{ 
         username: "",
-        remember: storage.getPersistSession() 
       }}
     >
       <Form.Item label="Username" name="username" rules={[{ required: true, message: "Please enter your username" }]}>
         <Input prefix={<User size={18} strokeWidth={2.25} style={{ color: "#94a3b8", marginRight: 12 }} />} placeholder="Username" />
       </Form.Item>
 
-      <Form.Item label="Password" name="password" rules={[{ required: true, message: "Please enter your password" }]} style={{ marginBottom: 8 }}>
+      <Form.Item label="Password" name="password" rules={[{ required: true, message: "Please enter your password" }]} style={{ marginBottom: 16 }}>
         <Input.Password prefix={<Lock size={18} strokeWidth={2.25} style={{ color: "#94a3b8", marginRight: 12 }} />} placeholder="Password" />
-      </Form.Item>
-
-      <Form.Item name="remember" valuePropName="checked" style={{ marginBottom: 0 }}>
-        <Checkbox style={{ color: "#475569", fontSize: '14px' }}>Remember me</Checkbox>
       </Form.Item>
 
       <Form.Item style={{ marginBottom: 0, marginTop: 16 }}>
