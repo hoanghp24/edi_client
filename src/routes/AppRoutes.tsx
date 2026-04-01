@@ -5,6 +5,7 @@ import { useAuth } from "../hooks/useAuth";
 import { Login } from "../pages/login/Login";
 import { MainLayout } from "../layouts/MainLayout/MainLayout";
 import { DashboardOverview } from "../pages/dashboard/DashboardOverview";
+import { PartOverviewPage } from "../pages/master-data/PartOverviewPage";
 import { Placeholder } from "../pages/Placeholder";
 
 import { PrivateRoute } from "./PrivateRoute";
@@ -30,7 +31,7 @@ export const AppRoutes = () => {
           <Route path={ROUTES.SHIPPING_ADVICE} element={<Placeholder title="Shipping Advice" />} />
           <Route path={ROUTES.MASTER_DATA.CUSTOMER} element={<Placeholder title="Master Data End Customer" />} />
           <Route path={ROUTES.MASTER_DATA.LEAD_TIME} element={<Placeholder title="Master Data Transit Lead Time" />} />
-          <Route path={ROUTES.MASTER_DATA.PART_OVERVIEW} element={<Placeholder title="Master Data Overview" />} />
+          <Route path={ROUTES.MASTER_DATA.PART_OVERVIEW} element={<PartOverviewPage />} />
           <Route path={ROUTES.MASTER_DATA.PART_ADD} element={<Placeholder title="Master Data Manual Add" />} />
           <Route path={ROUTES.MASTER_DATA.PART_IMPORT} element={<Placeholder title="Master Data Import by file" />} />
         </Route>
