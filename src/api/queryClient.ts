@@ -1,12 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
 
-/**
- * Global QueryClient configuration for TanStack Query.
- * Optimized for Enterprise logistics applications:
- * - 5 min stale time to reduce unnecessary API pressure.
- * - Automatic background refetching on window focus.
- * - Simple error retry policy.
- */
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

@@ -6,6 +6,27 @@ import { forceLogout } from '../features/auth/authSlice';
 import { AppStore } from '../state/store';
 
 import { HTTP_ERROR_MESSAGES, DEFAULT_ERROR_MESSAGE } from '../constants/errorMessages';
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
+
+// NProgress configuration
+NProgress.configure({ showSpinner: false, speed: 400, minimum: 0.1 });
+
+// Variable to track active requests for NProgress
+let activeRequests = 0;
+
+const startProgress = () => {
+  if (activeRequests === 0) NProgress.start();
+  activeRequests++;
+};
+
+const stopProgress = () => {
+  activeRequests--;
+  if (activeRequests <= 0) {
+    activeRequests = 0;
+    NProgress.done();
+  }
+};
 
 // Override Axios methods to reflect data unpacking in the response interceptor
 interface CustomAxiosInstance extends AxiosInstance {
@@ -49,6 +70,7 @@ const processQueue = (error: any, token: string | null = null) => {
 
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
+    startProgress();
     const token = storage.getAccessToken();
     if (token && config.headers) config.headers.Authorization = `Bearer ${token}`;
     return config;
@@ -57,8 +79,12 @@ apiClient.interceptors.request.use(
 );
 
 apiClient.interceptors.response.use(
-  (response) => response.data,
+  (response) => {
+    stopProgress();
+    return response.data;
+  },
   async (error: AxiosError) => {
+    stopProgress();
     const originalRequest = error.config as any;
 
     if (originalRequest.url?.includes(API_ENDPOINTS.AUTH.LOGIN)) {
