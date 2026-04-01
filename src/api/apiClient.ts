@@ -1,18 +1,40 @@
-import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
+import axios, { AxiosError, InternalAxiosRequestConfig, AxiosInstance, AxiosRequestConfig } from 'axios';
 import { storage } from '../utils/storage';
 import { AuthResponse } from '../types/auth';
 import { API_ENDPOINTS } from '../constants/apiEndpoints';
+import { forceLogout } from '../features/auth/authSlice';
+import { AppStore } from '../state/store';
 
-let store: any;
+import { HTTP_ERROR_MESSAGES, DEFAULT_ERROR_MESSAGE } from '../constants/errorMessages';
 
-export const injectStore = (_store: any) => {
+// Override Axios methods to reflect data unpacking in the response interceptor
+interface CustomAxiosInstance extends AxiosInstance {
+  <T = any, R = T, D = any>(config: AxiosRequestConfig<D>): Promise<R>;
+  <T = any, R = T, D = any>(url: string, config?: AxiosRequestConfig<D>): Promise<R>;
+  get<T = any, R = T, D = any>(url: string, config?: AxiosRequestConfig<D>): Promise<R>;
+  post<T = any, R = T, D = any>(url: string, data?: D, config?: AxiosRequestConfig<D>): Promise<R>;
+  put<T = any, R = T, D = any>(url: string, data?: D, config?: AxiosRequestConfig<D>): Promise<R>;
+  patch<T = any, R = T, D = any>(url: string, data?: D, config?: AxiosRequestConfig<D>): Promise<R>;
+  delete<T = any, R = T, D = any>(url: string, config?: AxiosRequestConfig<D>): Promise<R>;
+}
+
+let store: AppStore;
+
+export const injectStore = (_store: AppStore) => {
   store = _store;
+};
+
+// Helper: Normalize multiple error formats from different backends
+const normalizeError = (error: AxiosError): string => {
+  const data = error.response?.data as any;
+  const status = error.response?.status;
+  return data?.message || data?.Message || (status ? HTTP_ERROR_MESSAGES[status] : null) || data?.title || error.message || DEFAULT_ERROR_MESSAGE;
 };
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   headers: { 'Content-Type': 'application/json' },
-});
+}) as CustomAxiosInstance;
 
 let isRefreshing = false;
 let failedQueue: Array<{
@@ -35,12 +57,12 @@ apiClient.interceptors.request.use(
 );
 
 apiClient.interceptors.response.use(
-  (response) => response,
+  (response) => response.data,
   async (error: AxiosError) => {
     const originalRequest = error.config as any;
 
     if (originalRequest.url?.includes(API_ENDPOINTS.AUTH.LOGIN)) {
-      return Promise.reject(error);
+      return Promise.reject(new Error(normalizeError(error)));
     }
 
     if (error.response?.status === 401 && !originalRequest._retry) {
@@ -58,15 +80,14 @@ apiClient.interceptors.response.use(
       const refreshToken = storage.getRefreshToken();
       if (!refreshToken) {
         isRefreshing = false;
-        if (store) store.dispatch({ type: 'auth/forceLogout' });
-        return Promise.reject(error);
+        if (store) store.dispatch(forceLogout());
+        return Promise.reject(new Error(normalizeError(error)));
       }
 
       try {
         const { data } = await axios.post<AuthResponse>(
           `${import.meta.env.VITE_API_URL}${API_ENDPOINTS.AUTH.REFRESH}`, 
-          { refreshToken },
-          { headers: { Authorization: `Bearer ${storage.getAccessToken()}` } }
+          { refreshToken }
         );
 
         storage.setAccessToken(data.accessToken);
@@ -75,15 +96,16 @@ apiClient.interceptors.response.use(
         
         originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
         return apiClient(originalRequest);
-      } catch (refreshError) {
+      } catch (refreshError: any) {
         processQueue(refreshError, null);
-        if (store) store.dispatch({ type: 'auth/forceLogout' });
-        return Promise.reject(refreshError);
+        if (store) store.dispatch(forceLogout());
+        return Promise.reject(new Error(normalizeError(refreshError)));
       } finally {
         isRefreshing = false;
       }
     }
-    return Promise.reject(error);
+    
+    return Promise.reject(new Error(normalizeError(error)));
   }
 );
 

@@ -1,8 +1,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { User, AuthResponse, LoginRequest } from '../../types/auth';
+import { User, AuthResponse } from '../../types/auth';
 import { authApi } from './services/authApi';
 import { storage } from '../../utils/storage';
-import { HTTP_ERROR_MESSAGES, DEFAULT_ERROR_MESSAGE } from '../../constants/errorMessages';
 
 interface AuthState {
   user: User | null;
@@ -21,24 +20,6 @@ const initialState: AuthState = {
   error: null,
   isAuthenticated: !!storage.getAccessToken(),
 };
-
-export const loginThunk = createAsyncThunk(
-  'auth/login',
-  async (credentials: LoginRequest, { rejectWithValue }) => {
-    try {
-      const response = await authApi.login(credentials);
-      storage.setAccessToken(response.accessToken);
-      storage.setRefreshToken(response.refreshToken);
-      storage.setUserData(response.User);
-      return response;
-    } catch (error: any) {
-      const data = error.response?.data;
-      const status = error.response?.status;
-      const errorMessage = data?.message || data?.Message || (status ? HTTP_ERROR_MESSAGES[status] : null) || data?.title || DEFAULT_ERROR_MESSAGE;
-      return rejectWithValue(errorMessage);
-    }
-  }
-);
 
 export const logoutThunk = createAsyncThunk(
   'auth/logout',
@@ -61,6 +42,25 @@ const authSlice = createSlice({
       state.accessToken = null;
       state.refreshToken = null;
       state.isAuthenticated = false;
+      state.loading = false;
+      state.error = null;
+    },
+    setCredentials: (state, action: PayloadAction<AuthResponse>) => {
+      state.isAuthenticated = true;
+      state.user = action.payload.User;
+      state.accessToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
+      state.loading = false;
+      state.error = null;
+    },
+    logout: (state) => {
+      storage.clear();
+      state.user = null;
+      state.accessToken = null;
+      state.refreshToken = null;
+      state.isAuthenticated = false;
+      state.loading = false;
+      state.error = null;
     },
     clearError: (state) => {
       state.error = null;
@@ -72,21 +72,6 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(loginThunk.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(loginThunk.fulfilled, (state, action: PayloadAction<AuthResponse>) => {
-        state.loading = false;
-        state.isAuthenticated = true;
-        state.user = action.payload.User;
-        state.accessToken = action.payload.accessToken;
-        state.refreshToken = action.payload.refreshToken;
-      })
-      .addCase(loginThunk.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      })
       .addCase(logoutThunk.fulfilled, (state) => {
         state.user = null;
         state.accessToken = null;
@@ -96,5 +81,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { forceLogout, clearError, updateUser } = authSlice.actions;
+export const { forceLogout, clearError, updateUser, setCredentials, logout } = authSlice.actions;
 export default authSlice.reducer;

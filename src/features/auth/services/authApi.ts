@@ -3,9 +3,8 @@ import { AuthResponse, LoginRequest } from '../../../types/auth';
 import { API_ENDPOINTS } from '../../../constants/apiEndpoints';
 
 export const authApi = {
-  login: async (credentials: LoginRequest): Promise<AuthResponse> => {
-    const response = await apiClient.post<AuthResponse>(API_ENDPOINTS.AUTH.LOGIN, credentials);
-    return response.data;
+  login: (credentials: LoginRequest): Promise<AuthResponse> => {
+    return apiClient.post<AuthResponse>(API_ENDPOINTS.AUTH.LOGIN, credentials);
   },
 
   logout: async (refreshToken: string) => {
@@ -16,8 +15,7 @@ export const authApi = {
     }
   },
 
-  getProfile: async (): Promise<AuthResponse['User']> => {
-    const response = await apiClient.get<AuthResponse['User']>(API_ENDPOINTS.USERS.PROFILE);
-    return response.data;
+  getProfile: (): Promise<AuthResponse['User']> => {
+    return apiClient.get<AuthResponse['User']>(API_ENDPOINTS.USERS.PROFILE);
   }
 };

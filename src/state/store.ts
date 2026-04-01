@@ -5,11 +5,11 @@ import shippingReducer from '../features/shipping/shippingSlice';
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    shipping: shippingReducer, // Shipping feature state globally registered here
+    shipping: shippingReducer,
   },
   devTools: import.meta.env.MODE !== 'production',
 });
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+export type AppStore = typeof store;
