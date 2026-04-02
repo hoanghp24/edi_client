@@ -1,10 +1,14 @@
 import apiClient from '../../../api/apiClient';
 import { AuthResponse, LoginRequest } from '../../../types/auth';
 import { API_ENDPOINTS } from '../../../constants/apiEndpoints';
+import { AuthResponseSchema } from '../schemas/authSchema';
 
 export const authApi = {
-  login: (credentials: LoginRequest): Promise<AuthResponse> => {
-    return apiClient.post<AuthResponse>(API_ENDPOINTS.AUTH.LOGIN, credentials);
+  login: async (credentials: LoginRequest): Promise<AuthResponse> => {
+    const data = await apiClient.post<AuthResponse>(API_ENDPOINTS.AUTH.LOGIN, credentials);
+    
+    // Runtime data validation with Zod
+    return AuthResponseSchema.parse(data);
   },
 
   logout: async (refreshToken: string) => {
@@ -15,7 +19,8 @@ export const authApi = {
     }
   },
 
-  getProfile: (): Promise<AuthResponse['User']> => {
-    return apiClient.get<AuthResponse['User']>(API_ENDPOINTS.USERS.PROFILE);
+  getProfile: async (): Promise<AuthResponse['User']> => {
+    const data = await apiClient.get<AuthResponse['User']>(API_ENDPOINTS.USERS.PROFILE);
+    return data;
   }
 };

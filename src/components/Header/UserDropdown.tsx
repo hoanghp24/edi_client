@@ -1,6 +1,6 @@
 import React from "react";
 import type { MenuProps } from "antd";
-import { Avatar, Typography, Dropdown, ConfigProvider } from "antd";
+import { Avatar, Typography, Dropdown } from "antd";
 import { LogOut, User, Settings, ChevronDown } from "lucide-react";
 import { useAppSelector } from "../../state/hooks";
 

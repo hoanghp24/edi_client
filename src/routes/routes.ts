@@ -22,3 +22,21 @@ export const ROUTES = {
   },
   SPLASH_GALLERY: '/splash-gallery',
 };
+
+export const ROUTE_NAMES: Record<string, string> = {
+  [ROUTES.DASHBOARD]: 'Dashboard',
+  [ROUTES.SHIPPING_PLAN.SERIAL]: 'Serial Shipping Plan',
+  [ROUTES.SHIPPING_PLAN.SAMPLE]: 'Sample Shipping Plan',
+  [ROUTES.TRACKING.MODE_AIR]: 'Air Freight Tracking',
+  [ROUTES.TRACKING.MODE_SEA]: 'Sea Freight Tracking',
+  [ROUTES.TRACKING.STATUS_TRANSIT]: 'In-Transit Monitoring',
+  [ROUTES.TRACKING.STATUS_ARRIVED]: 'Shipment Arrivals',
+  [ROUTES.SHIPPING_ADVICE]: 'Shipping Advice',
+  [ROUTES.MASTER_DATA.CUSTOMER]: 'End Customer Registry',
+  [ROUTES.MASTER_DATA.LEAD_TIME]: 'Transit Lead Times',
+  [ROUTES.MASTER_DATA.PART_OVERVIEW]: 'Part Overview',
+  [ROUTES.MASTER_DATA.PART_ADD]: 'Manual Part Entry',
+  [ROUTES.MASTER_DATA.PART_IMPORT]: 'Batch Part Import',
+  [ROUTES.SPLASH_GALLERY]: 'Visual Showcase',
+  [ROUTES.LOGIN]: 'Sign In',
+};

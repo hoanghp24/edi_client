@@ -6,6 +6,14 @@ import { forceLogout } from '../features/auth/authSlice';
 import { AppStore } from '../state/store';
 import { HTTP_ERROR_MESSAGES, DEFAULT_ERROR_MESSAGE } from '../constants/errorMessages';
 import { startProgress, stopProgress } from '../utils/progress';
+import { notification } from 'antd';
+
+import { env } from '../config/env';
+
+// Interface to help distinguish handled vs unhandled errors
+export interface ApiError extends Error {
+  isHandled?: boolean;
+}
 
 // Override Axios methods to reflect data unpacking in the response interceptor
 interface CustomAxiosInstance extends AxiosInstance {
@@ -32,8 +40,9 @@ const normalizeError = (error: AxiosError): string => {
 };
 
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: env.VITE_API_URL,
   headers: { 'Content-Type': 'application/json' },
+  timeout: 15000,
 }) as CustomAxiosInstance;
 
 let isRefreshing = false;
@@ -110,7 +119,17 @@ apiClient.interceptors.response.use(
       }
     }
     
-    return Promise.reject(new Error(normalizeError(error)));
+    const errorMessage = normalizeError(error);
+
+    if (error.response?.status !== 401 && !originalRequest.url?.includes(API_ENDPOINTS.AUTH.LOGIN)) {
+      notification.error({
+        message: 'System Alert',
+        description: errorMessage,
+        placement: 'topRight',
+      });
+    }
+
+    return Promise.reject(new Error(errorMessage));
   }
 );
 

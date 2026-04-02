@@ -1,47 +1,32 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Layout } from 'antd';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Header } from '../header/Header';
 import { RootState } from '../../state/store';
 import { setSidebarCollapsed } from '../../state/uiSlice';
 import { Sidebar } from '../sidebar/Sidebar';
 import { useAuth } from '../../hooks/useAuth';
-import { SplashScreen } from '../../components/common/SplashScreen/SplashScreen';
 import { useRouteProgress } from '../../hooks/useRouteProgress';
+import { usePageTitle } from '../../hooks/usePageTitle';
 import './MainLayout.scss';
 
 const { Content } = Layout;
 
 export const MainLayout = () => {
   useRouteProgress();
+  usePageTitle(); 
   const dispatch = useDispatch();
   const collapsed = useSelector((state: RootState) => state.ui.sidebarCollapsed);
-  const [loading, setLoading] = React.useState(true);
   
   const setCollapsed = (val: boolean) => dispatch(setSidebarCollapsed(val));
   const { logout } = useAuth();
-  const navigate = useNavigate();
-
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, []);
+  const location = useLocation();
 
   const handleLogout = () => {
-    setLoading(true);
-
-    setTimeout(() => {
-      logout();
-      navigate('/');
-    }, 2000);
+    logout();
   };
-
-  if (loading) {
-    return <SplashScreen />;
-  }
 
   return (
     <Layout className={`main-layout ${collapsed ? 'sidebar-collapsed' : ''}`}>
@@ -53,7 +38,17 @@ export const MainLayout = () => {
           onLogout={handleLogout} 
         />
         <Content className="main-content">
-          <Outlet />
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={location.pathname}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+            >
+              <Outlet />
+            </motion.div>
+          </AnimatePresence>
         </Content>
       </Layout>
     </Layout>

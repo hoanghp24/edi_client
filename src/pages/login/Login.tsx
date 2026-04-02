@@ -5,13 +5,12 @@ import { motion } from "framer-motion";
 import "./Login.scss";
 import vacLogo from "../../assets/VAC_Logo.png";
 import { LoginForm } from "../../features/auth/components/LoginForm";
+import { usePageTitle } from "../../hooks/usePageTitle";
 
 const { Title, Text, Paragraph } = Typography;
 
 export const Login: React.FC = () => {
-  useEffect(() => {
-    document.title = "Sign In | Shipping Plan";
-  }, []);
+  usePageTitle();
 
   return (
     <div className="login-page">

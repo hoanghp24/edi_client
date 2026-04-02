@@ -24,6 +24,17 @@ export const useAuth = () => {
     }
   });
 
+  const logoutMutation = useMutation({
+    mutationFn: () => {
+      const refreshToken = storage.getRefreshToken();
+      return authApi.logout(refreshToken || '');
+    },
+    onSettled: () => {
+      dispatch(logout());
+      storage.clear();
+    }
+  });
+
   const login = async (credentials: LoginRequest): Promise<LoginResult> => {
     try {
       await loginMutation.mutateAsync(credentials);
@@ -33,17 +44,22 @@ export const useAuth = () => {
     }
   };
 
-  const handleLogout = () => {
-    dispatch(logout());
+  const handleLogout = async () => {
+    try {
+      await logoutMutation.mutateAsync();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return {
     isAuthenticated,
     user,
-    loading: loginMutation.isPending,
-    error: loginMutation.error ? (loginMutation.error as any).response?.data?.message || reduxError : null,
     login,
     logout: handleLogout,
-    isPending: loginMutation.isPending
+    isLoggingIn: loginMutation.isPending,
+    isLoggingOut: logoutMutation.isPending,
+    loginError: loginMutation.error ? (loginMutation.error as any).message : reduxError,
+    logoutError: logoutMutation.error ? (logoutMutation.error as any).message : null,
   };
 };

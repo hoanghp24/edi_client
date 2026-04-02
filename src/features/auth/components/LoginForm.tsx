@@ -1,14 +1,12 @@
 import React from "react";
-import { Form, Input, Button, message, Checkbox } from "antd";
+import { Form, Input, Button, message } from "antd";
 import { User, Lock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { motion, Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import { useAuth } from "../../../hooks/useAuth";
-import { ROUTES } from "../../../routes/routes";
-import { storage } from "../../../utils/storage";
 
 export const LoginForm: React.FC = () => {
-  const { login, loading } = useAuth();
+  const { login, isLoggingIn } = useAuth();
   const navigate = useNavigate();
 
   const onFinish = async (values: any) => {
@@ -49,7 +47,7 @@ export const LoginForm: React.FC = () => {
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
-          <Button type="primary" htmlType="submit" className="login-submit-btn" block loading={loading}>
+          <Button type="primary" htmlType="submit" className="login-submit-btn" block loading={isLoggingIn}>
             Sign In
           </Button>
         </motion.div>
