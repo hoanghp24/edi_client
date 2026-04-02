@@ -2,7 +2,6 @@ import axios, { AxiosError, InternalAxiosRequestConfig, AxiosInstance, AxiosRequ
 import { storage } from '../utils/storage';
 import { AuthResponse } from '../types/auth';
 import { API_ENDPOINTS } from '../constants/apiEndpoints';
-import { forceLogout } from '../features/auth/authSlice';
 import { AppStore } from '../state/store';
 import { HTTP_ERROR_MESSAGES, DEFAULT_ERROR_MESSAGE } from '../constants/errorMessages';
 import { startProgress, stopProgress } from '../utils/progress';
@@ -94,7 +93,7 @@ apiClient.interceptors.response.use(
       const refreshToken = storage.getRefreshToken();
       if (!refreshToken) {
         isRefreshing = false;
-        if (store) store.dispatch(forceLogout());
+        if (store) store.dispatch({ type: 'auth/forceLogout' });
         return Promise.reject(new Error(normalizeError(error)));
       }
 
@@ -112,7 +111,7 @@ apiClient.interceptors.response.use(
         return apiClient(originalRequest);
       } catch (refreshError: any) {
         processQueue(refreshError, null);
-        if (store) store.dispatch(forceLogout());
+        if (store) store.dispatch({ type: 'auth/forceLogout' });
         return Promise.reject(new Error(normalizeError(refreshError)));
       } finally {
         isRefreshing = false;
