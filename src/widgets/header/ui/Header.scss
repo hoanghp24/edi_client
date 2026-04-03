@@ -1,0 +1,75 @@
+@use '../../../shared/styles/theme' as *;
+
+.dashboard-header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: $sidebar-width;
+  padding: 0 16px !important;
+  background: $bg-card !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  border-bottom: 1px solid $border-color !important;
+  height: $header-height !important;
+  transition: $trans-sidebar !important;
+  box-shadow: $shadow-sm !important;
+  overflow: hidden !important;
+  z-index: 999;
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .collapse-button {
+      font-size: 16px;
+      width: 40px;
+      height: 40px;
+      border-radius: $radius-base;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: $text-secondary;
+      
+      &:hover {
+        color: $primary-red;
+        background: $bg-main;
+      }
+    }
+
+    .header-brand-info {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+
+      .brand-title {
+        font-weight: 800;
+        font-size: 16px;
+        color: $text-main;
+        letter-spacing: -0.2px;
+
+        .brand-red {
+          color: $primary-red;
+        }
+      }
+
+      .brand-subtitle {
+        font-weight: 500;
+        font-size: 10px;
+        color: $text-muted;
+        letter-spacing: 1px;
+      }
+    }
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+}
+
+.sidebar-collapsed .dashboard-header {
+  left: $sidebar-collapsed-width !important;
+}

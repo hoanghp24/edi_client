@@ -1,0 +1,71 @@
+@use '../../../shared/styles/theme' as *;
+
+.dashboard-sider {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  height: 100vh;
+  transition: $trans-sidebar !important;
+  background: $sidebar-bg !important;
+  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+
+  .sider-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    z-index: 11;
+  }
+
+  .logo-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    height: $header-height;
+    transform: translateX(-10px);
+    
+    .logo-image {
+      height: 40px;
+      width: 40px;
+      object-fit: contain;
+    }
+
+    .brand-text {
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+      text-transform: uppercase;
+
+      .brand-accent {
+        color: $primary-red;
+      }
+    }
+    
+    &.sidebar-collapsed {
+      padding: 0;
+      justify-content: center;
+      transform: translateX(0);
+      height: $header-height !important;
+    }
+  }
+
+  .menu-list-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 12px 0;
+
+    /* Hide scrollbar */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+}
