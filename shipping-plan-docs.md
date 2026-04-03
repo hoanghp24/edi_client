@@ -2,7 +2,7 @@
 
 > React 19 · Vite 7 · Redux Toolkit · React Query · Ant Design 6  
 > Kiến trúc: **FSD-inspired** (Feature-Sliced Design) — [feature-sliced.design](https://feature-sliced.design)  
-> Phiên bản 2.0
+> Phiên bản 3.0
 
 ---
 
@@ -19,6 +19,7 @@
 9. [Quy ước code](#9-quy-ước-code)
 10. [Scripts](#10-scripts)
 11. [Checklist trước khi merge PR](#11-checklist-trước-khi-merge-pr)
+12. [Tôi đang tạo file mới — để ở đâu?](#12-tôi-đang-tạo-file-mới--để-ở-đâu)
 
 ---
 
@@ -46,30 +47,117 @@ Dự án sử dụng kiến trúc **FSD-inspired** — lấy cảm hứng từ F
 
 ## 2. Kiến trúc Layer
 
-Codebase chia thành 4 layer, xếp theo thứ bậc từ cao xuống thấp.
+Codebase chia thành 5 layer, xếp theo thứ bậc từ cao xuống thấp.
 
 ```
-pages        ← biết về features và widgets
+app          ← khởi tạo ứng dụng, chạy 1 lần
   ↓
-features     ← biết về shared
+pages        ← route entry points
   ↓
-widgets      ← biết về shared
+features     ← business logic slices
   ↓
-shared       ← không biết ai
+widgets      ← composite UI blocks
+  ↓
+shared       ← không biết business, dùng ở mọi nơi
 ```
 
 > **Quy tắc cốt lõi:** một layer chỉ được import từ layer thấp hơn nó — không bao giờ import ngược lên trên.
 
 | # | Layer | Nằm ở | Vai trò |
 |---|---|---|---|
-| 1 | pages | `src/pages/` | Route entry points — kết nối URL với feature |
-| 2 | features | `src/features/` | Business logic slices — state, query, types |
-| 3 | widgets | `src/widgets/` | Composite UI blocks dùng nhiều nơi |
-| 4 | shared | `src/shared/` | Không biết business — dùng ở mọi layer |
+| 1 | app | `src/app/` | Khởi tạo app: providers, router, global styles |
+| 2 | pages | `src/pages/` | Route entry points — kết nối URL với feature |
+| 3 | features | `src/features/` | Business logic slices — state, query, types |
+| 4 | widgets | `src/widgets/` | Composite UI blocks dùng nhiều nơi |
+| 5 | shared | `src/shared/` | Không biết business — dùng ở mọi layer |
 
 ---
 
-### Layer 1 — `pages/`
+### Layer 1 — `app/`
+
+`app/` là layer cao nhất — chứa những thứ **chạy một lần duy nhất khi app boot**. Nhờ vậy `main.tsx` chỉ còn 3 dòng và không bao giờ phình to.
+
+```
+src/app/
+├── App.tsx              ← root component, gắn providers + router
+├── providers/
+│   ├── index.tsx        ← gộp tất cả providers vào một chỗ
+│   ├── QueryProvider.tsx
+│   ├── ReduxProvider.tsx
+│   ├── ThemeProvider.tsx
+│   └── RouterProvider.tsx
+├── router/
+│   ├── index.tsx        ← createBrowserRouter
+│   ├── PrivateRoute.tsx
+│   └── LazyRoutes.tsx
+└── styles/
+    ├── global.scss
+    ├── antd.override.scss
+    └── variables.scss
+```
+
+`main.tsx` khi đó rất gọn:
+
+```tsx
+// main.tsx
+import React    from 'react';
+import ReactDOM from 'react-dom/client';
+import { App }  from '@/app';
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+```
+
+`App.tsx` kết nối providers và router:
+
+```tsx
+// app/App.tsx
+import { RouterProvider } from 'react-router-dom';
+import { Providers }      from './providers';
+import { router }         from './router';
+
+export function App() {
+  return (
+    <Providers>
+      <RouterProvider router={router} />
+    </Providers>
+  );
+}
+```
+
+`Providers` gộp hết vào một chỗ, tránh lồng nhau nhiều tầng trong `main.tsx`:
+
+```tsx
+// app/providers/index.tsx
+import { Provider }             from 'react-redux';
+import { PersistGate }          from 'redux-persist/integration/react';
+import { QueryClientProvider }  from '@tanstack/react-query';
+import { ConfigProvider }       from 'antd';
+import { store, persistor }     from '@/shared/store';
+import { queryClient }          from '@/shared/api/queryClient';
+import { antdTheme }            from './ThemeProvider';
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  return (
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <QueryClientProvider client={queryClient}>
+          <ConfigProvider theme={antdTheme}>
+            {children}
+          </ConfigProvider>
+        </QueryClientProvider>
+      </PersistGate>
+    </Provider>
+  );
+}
+```
+
+---
+
+### Layer 2 — `pages/`
 
 Pages là layer **mỏng nhất**. Mỗi file tương ứng với một route. Pages không chứa business logic — chỉ lắp ghép features và widgets lại với nhau.
 
@@ -92,7 +180,7 @@ src/pages/
 └── LoginPage.tsx
 ```
 
-Một page điển hình trông như thế này:
+Một page điển hình:
 
 ```tsx
 // pages/ShippingPlanPage.tsx
@@ -114,9 +202,9 @@ export function ShippingPlanPage() {
 
 ---
 
-### Layer 2 — `features/`
+### Layer 3 — `features/`
 
-Features là trái tim của codebase. Mỗi feature là một **vertical slice** — tự chứa đủ state, data-fetching, types, và UI components nhỏ của riêng mình. Features không biết `pages` hay `widgets` tồn tại.
+Features là trái tim của codebase. Mỗi feature là một **vertical slice** — tự chứa đủ state, data-fetching, types, và UI components nhỏ của riêng mình. Features không biết `app`, `pages` hay `widgets` tồn tại.
 
 ```
 src/features/
@@ -183,13 +271,13 @@ export type { ShippingPlan }   from './shippingPlan.types';
 // shippingPlan.slice KHÔNG export trực tiếp — đi qua store
 ```
 
-> **Nguyên tắc:** Import từ feature luôn qua `index.ts`. Không bao giờ import trực tiếp vào file bên trong:  
+> **Nguyên tắc:** Import từ feature luôn qua `index.ts`.  
 > ✅ `import { ShippingPlanTable } from '@/features/shipping-plan'`  
 > ❌ `import { PlanTable } from '@/features/shipping-plan/components/PlanTable'`
 
 ---
 
-### Layer 3 — `widgets/`
+### Layer 4 — `widgets/`
 
 Widgets là các UI block lớn, tái sử dụng ở nhiều page, nhưng không phải atom UI đơn giản. Khác với `shared/ui` là widgets có thể biết về routing, layout context, hoặc kết hợp nhiều concerns.
 
@@ -211,11 +299,11 @@ src/widgets/
     └── index.ts
 ```
 
-> **Khi nào đưa vào widgets:** Nếu một component chỉ dùng trong 1 feature — để trong `features/ten-feature/components/`. Nếu dùng ở **2 feature trở lên** — chuyển lên `widgets/`.
+> **Khi nào đưa vào widgets:** Nếu component chỉ dùng trong 1 feature — để trong `features/ten-feature/components/`. Nếu dùng ở **2 feature trở lên** — chuyển lên `widgets/`.
 
 ---
 
-### Layer 4 — `shared/`
+### Layer 5 — `shared/`
 
 Shared là tầng nền tảng — **không biết gì về business logic** của dự án. Mọi thứ ở đây đều có thể copy sang dự án khác mà không cần sửa.
 
@@ -258,11 +346,25 @@ src/shared/
 
 ```
 src/
-├── main.tsx
-├── App.tsx
-├── vite-env.d.ts
+├── main.tsx                     ← 3 dòng, chỉ mount App
 │
-├── pages/                       ← layer 1
+├── app/                         ← layer 1: khởi tạo app
+│   ├── App.tsx
+│   ├── providers/
+│   │   ├── index.tsx
+│   │   ├── QueryProvider.tsx
+│   │   ├── ReduxProvider.tsx
+│   │   └── ThemeProvider.tsx
+│   ├── router/
+│   │   ├── index.tsx
+│   │   ├── PrivateRoute.tsx
+│   │   └── LazyRoutes.tsx
+│   └── styles/
+│       ├── global.scss
+│       ├── antd.override.scss
+│       └── variables.scss
+│
+├── pages/                       ← layer 2: route entry points
 │   ├── DashboardPage.tsx
 │   ├── ShippingPlanPage.tsx
 │   ├── SerialShippingPage.tsx
@@ -279,30 +381,25 @@ src/
 │   ├── ImportByFilePage.tsx
 │   └── LoginPage.tsx
 │
-├── features/                    ← layer 2
+├── features/                    ← layer 3: business logic
 │   ├── auth/
 │   ├── shipping-plan/
 │   ├── shipment-tracking/
 │   ├── shipping-advice/
 │   └── master-data/
 │
-├── widgets/                     ← layer 3
+├── widgets/                     ← layer 4: composite UI
 │   ├── layout/
 │   ├── navigation/
 │   └── data-display/
 │
-├── shared/                      ← layer 4
-│   ├── api/
-│   ├── ui/
-│   ├── lib/
-│   ├── hooks/
-│   ├── store/
-│   └── config/
-│
-└── routes/
-    ├── index.tsx                ← createBrowserRouter
-    ├── PrivateRoute.tsx
-    └── LazyRoutes.tsx
+└── shared/                      ← layer 5: foundation
+    ├── api/
+    ├── ui/
+    ├── lib/
+    ├── hooks/
+    ├── store/
+    └── config/
 ```
 
 ---
@@ -311,19 +408,22 @@ src/
 
 | | Cũ | Mới (FSD-inspired) |
 |---|---|---|
+| Khởi tạo app | Providers rải rác trong `main.tsx` | `app/providers/` — một chỗ duy nhất |
+| Router config | `routes/` ở root `src/` | `app/router/` — app-level concern |
+| Global styles | `styles/` ở root `src/` | `app/styles/` — thuộc app layer |
 | Page | `features/shipping-plan/ShippingPlanPage.tsx` | `pages/ShippingPlanPage.tsx` — layer riêng, mỏng |
 | Layout | `components/layout/AppLayout.tsx` | `widgets/layout/AppLayout.tsx` |
 | Service | `services/shippingPlan.service.ts` | `shared/api/` + gọi trong `features/*/query.ts` |
 | Utils | `utils/` ở root `src/` | `shared/lib/` |
 | Types shared | `types/` ở root `src/` | `shared/` + `features/*/types.ts` |
 | Constants | `constants/` ở root `src/` | `shared/config/` |
-| Import rule | Không có quy tắc, dễ circular import | Rõ ràng: `pages → features → shared` |
+| Import rule | Không có quy tắc, dễ circular import | Rõ ràng: `app → pages → features → shared` |
 
 ---
 
 ## 5. Routing
 
-### `routes/index.tsx`
+### `app/router/index.tsx`
 
 ```tsx
 import { createBrowserRouter } from 'react-router-dom';
@@ -331,26 +431,50 @@ import { lazy, Suspense }      from 'react';
 import { ROUTES }              from '@/shared/config/routes';
 import { AppLayout }           from '@/widgets/layout';
 import { PrivateRoute }        from './PrivateRoute';
+import { LoadingSpinner }      from '@/shared/ui';
 
-const DashboardPage    = lazy(() => import('@/pages/DashboardPage'));
-const ShippingPlanPage = lazy(() => import('@/pages/ShippingPlanPage'));
-// ... các page khác
-
-const wrap = (C: React.ComponentType) => (
-  <Suspense fallback={<Spinner />}><C /></Suspense>
+const wrap = (C: React.LazyExoticComponent<() => JSX.Element>) => (
+  <Suspense fallback={<LoadingSpinner />}><C /></Suspense>
 );
+
+const DashboardPage           = lazy(() => import('@/pages/DashboardPage'));
+const ShippingPlanPage        = lazy(() => import('@/pages/ShippingPlanPage'));
+const SerialShippingPage      = lazy(() => import('@/pages/SerialShippingPage'));
+const SampleShippingPage      = lazy(() => import('@/pages/SampleShippingPage'));
+const TrackingAirPage         = lazy(() => import('@/pages/TrackingAirPage'));
+const TrackingSeaPage         = lazy(() => import('@/pages/TrackingSeaPage'));
+const TrackingInTransitPage   = lazy(() => import('@/pages/TrackingInTransitPage'));
+const TrackingArrivedPage     = lazy(() => import('@/pages/TrackingArrivedPage'));
+const ShippingAdvicePage      = lazy(() => import('@/pages/ShippingAdvicePage'));
+const EndCustomerPage         = lazy(() => import('@/pages/EndCustomerPage'));
+const TransitLeadTimePage     = lazy(() => import('@/pages/TransitLeadTimePage'));
+const MasterDataOverviewPage  = lazy(() => import('@/pages/MasterDataOverviewPage'));
+const ManualAddPage           = lazy(() => import('@/pages/ManualAddPage'));
+const ImportByFilePage        = lazy(() => import('@/pages/ImportByFilePage'));
+const LoginPage               = lazy(() => import('@/pages/LoginPage'));
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <PrivateRoute><AppLayout /></PrivateRoute>,
     children: [
-      { index: true,                element: wrap(DashboardPage) },
-      { path: ROUTES.SHIPPING_PLAN, element: wrap(ShippingPlanPage) },
-      // ...
+      { index: true,                          element: wrap(DashboardPage) },
+      { path: ROUTES.SHIPPING_PLAN,           element: wrap(ShippingPlanPage) },
+      { path: ROUTES.SERIAL_SHIPPING,         element: wrap(SerialShippingPage) },
+      { path: ROUTES.SAMPLE_SHIPPING,         element: wrap(SampleShippingPage) },
+      { path: ROUTES.TRACKING_AIR,            element: wrap(TrackingAirPage) },
+      { path: ROUTES.TRACKING_SEA,            element: wrap(TrackingSeaPage) },
+      { path: ROUTES.TRACKING_IN_TRANSIT,     element: wrap(TrackingInTransitPage) },
+      { path: ROUTES.TRACKING_ARRIVED,        element: wrap(TrackingArrivedPage) },
+      { path: ROUTES.SHIPPING_ADVICE,         element: wrap(ShippingAdvicePage) },
+      { path: ROUTES.MASTER_END_CUSTOMER,     element: wrap(EndCustomerPage) },
+      { path: ROUTES.MASTER_LEAD_TIME,        element: wrap(TransitLeadTimePage) },
+      { path: ROUTES.MASTER_PART_OVERVIEW,    element: wrap(MasterDataOverviewPage) },
+      { path: ROUTES.MASTER_PART_ADD,         element: wrap(ManualAddPage) },
+      { path: ROUTES.MASTER_PART_IMPORT,      element: wrap(ImportByFilePage) },
     ],
   },
-  { path: ROUTES.LOGIN, element: <LoginPage /> },
+  { path: ROUTES.LOGIN, element: wrap(LoginPage) },
 ]);
 ```
 
@@ -383,7 +507,7 @@ export const ROUTES = {
 ### `shared/api/axiosInstance.ts`
 
 ```ts
-import axios    from 'axios';
+import axios     from 'axios';
 import NProgress from 'nprogress';
 import { store } from '@/shared/store';
 
@@ -400,8 +524,8 @@ api.interceptors.request.use(config => {
 });
 
 api.interceptors.response.use(
-  res  => { NProgress.done(); return res; },
-  err  => { NProgress.done(); return Promise.reject(err); }
+  res => { NProgress.done(); return res; },
+  err => { NProgress.done(); return Promise.reject(err); }
 );
 
 export default api;
@@ -414,12 +538,12 @@ export default api;
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api            from '@/shared/api/axiosInstance';
 import { QUERY_KEYS } from '@/shared/config/queryKeys';
-import type { ShippingPlan } from './shippingPlan.types';
+import type { ShippingPlan, CreatePlanDto, PlanFilters } from './shippingPlan.types';
 
 export function useShippingPlans(filters: PlanFilters) {
   return useQuery({
     queryKey: QUERY_KEYS.shippingPlan.list(filters),
-    queryFn:  () => api.get('/shipping-plans', { params: filters })
+    queryFn:  () => api.get<ShippingPlan[]>('/shipping-plans', { params: filters })
                        .then(r => r.data),
     staleTime: 5 * 60 * 1000,
   });
@@ -430,7 +554,7 @@ export function useCreatePlan() {
   return useMutation({
     mutationFn: (dto: CreatePlanDto) => api.post('/shipping-plans', dto),
     onSuccess:  () => qc.invalidateQueries({
-      queryKey: QUERY_KEYS.shippingPlan.all()
+      queryKey: QUERY_KEYS.shippingPlan.all(),
     }),
   });
 }
@@ -442,7 +566,7 @@ export function useCreatePlan() {
 export const QUERY_KEYS = {
   shippingPlan: {
     all:    () => ['shippingPlan'] as const,
-    list:   (f: PlanFilters) => [...QUERY_KEYS.shippingPlan.all(), 'list', f]   as const,
+    list:   (f: PlanFilters) => [...QUERY_KEYS.shippingPlan.all(), 'list', f]    as const,
     detail: (id: string)     => [...QUERY_KEYS.shippingPlan.all(), 'detail', id] as const,
   },
   tracking: {
@@ -622,9 +746,11 @@ export default tseslint.config(
 
 - Luôn dùng alias `@/` — không dùng đường dẫn tương đối `../../`
 - Import từ feature qua `index.ts` — không import thẳng vào file bên trong
+- `app/` chỉ import từ `widgets/`, `features/`, `shared/`
 - `pages/` chỉ import từ `features/` và `widgets/`
 - `features/` chỉ import từ `shared/`
-- `shared/` không import từ `features/`, `widgets/`, `pages/`
+- `widgets/` chỉ import từ `shared/`
+- `shared/` không import từ bất kỳ layer nào khác
 
 ### TypeScript
 
@@ -651,15 +777,87 @@ export default tseslint.config(
 - [ ] `yarn lint` không còn warning/error
 - [ ] `yarn build` thành công, không có TypeScript error
 - [ ] Không có `console.log` sót
+- [ ] `main.tsx` không chứa gì ngoài mount `<App />`
+- [ ] Providers mới được thêm vào `app/providers/` — không thêm trực tiếp vào `main.tsx`
 - [ ] Page không chứa `useQuery` hay `dispatch` — chỉ render
-- [ ] Feature không import từ `pages/` hay `widgets/`
-- [ ] `shared/` không import từ `features/`, `widgets/`, `pages/`
+- [ ] `app/` không import từ `pages/`
+- [ ] `features/` không import từ `app/`, `pages/`, `widgets/`
+- [ ] `widgets/` không import từ `app/`, `pages/`, `features/`
+- [ ] `shared/` không import từ bất kỳ layer nào khác
 - [ ] Import từ feature qua `index.ts` — không import trực tiếp vào file trong feature
 - [ ] Component dùng ở 2+ feature đã được chuyển lên `widgets/`
 - [ ] Query key mới đã thêm vào `shared/config/queryKeys.ts`
-- [ ] Route mới đã thêm vào `shared/config/routes.ts` và `routes/index.tsx`
+- [ ] Route mới đã thêm vào `shared/config/routes.ts` và `app/router/index.tsx`
 - [ ] `.env` chưa bị commit
 
 ---
 
-*Shipping Plan — Tài liệu nội bộ · Phiên bản 2.0 · Kiến trúc FSD-inspired*
+## 12. Tôi đang tạo file mới — để ở đâu?
+
+Dùng flowchart này để tự quyết định mà không cần hỏi. Đọc từ trên xuống, dừng ở câu hỏi đầu tiên khớp với file bạn đang tạo.
+
+```
+Nó chạy 1 lần khi app boot?
+(provider, router config, global style)
+  → app/
+
+Nó là một route — tương ứng với 1 URL?
+  → pages/
+
+Nó là logic của 1 feature cụ thể?
+(state, API call, type)
+  → features/ten-feature/
+
+Nó là UI nhỏ, chỉ dùng trong 1 feature?
+(form, row, badge riêng của feature đó)
+  → features/ten-feature/components/
+
+Nó là UI block lớn, dùng ở 2+ feature hoặc nhiều page?
+(layout, sidebar, table tổng quát)
+  → widgets/
+
+Nó không biết gì về business, dùng ở mọi nơi?
+(axios instance, format date, useDebounce, Button, Spinner)
+  → shared/
+```
+
+---
+
+### Ví dụ thực tế
+
+| Tôi đang tạo... | Để ở |
+|---|---|
+| Ant Design theme config | `app/providers/ThemeProvider.tsx` |
+| Trang danh sách lô hàng | `pages/ShippingPlanPage.tsx` |
+| Bảng hiển thị danh sách plan | `features/shipping-plan/components/PlanTable.tsx` |
+| Hook gọi API lấy danh sách plan | `features/shipping-plan/shippingPlan.query.ts` |
+| Type `ShippingPlan` | `features/shipping-plan/shippingPlan.types.ts` |
+| Sidebar navigation | `widgets/navigation/Sidebar.tsx` |
+| Table dùng ở cả tracking lẫn master-data | `widgets/data-display/DataTable.tsx` |
+| Hàm format ngày tháng | `shared/lib/formatDate.ts` |
+| Hook `useDebounce` | `shared/hooks/useDebounce.ts` |
+| Axios instance | `shared/api/axiosInstance.ts` |
+| Constant `ROUTES` | `shared/config/routes.ts` |
+
+---
+
+### Vẫn không chắc?
+
+Hỏi 3 câu này theo thứ tự:
+
+**1. File này có biết về business domain không?**
+- Không biết gì → `shared/`
+- Có biết → tiếp tục
+
+**2. File này dùng ở bao nhiêu feature?**
+- Chỉ 1 feature → vào trong `features/ten-feature/`
+- 2+ feature hoặc không thuộc feature nào → tiếp tục
+
+**3. File này là UI hay là logic app-level?**
+- UI block lớn → `widgets/`
+- Logic khởi tạo app → `app/`
+- Route entry point → `pages/`
+
+---
+
+*Shipping Plan — Tài liệu nội bộ · Phiên bản 3.0 · Kiến trúc FSD-inspired*
