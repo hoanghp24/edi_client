@@ -45,52 +45,19 @@ export interface BreadcrumbItem {
 }
 
 export const ROUTE_BREADCRUMBS: Record<string, BreadcrumbItem[]> = {
-  [ROUTES.SHIPPING_PLAN.SERIAL]: [
-    { label: 'Shipping Plan' },
-    { label: 'Serial' },
-  ],
-  [ROUTES.SHIPPING_PLAN.SAMPLE]: [
-    { label: 'Shipping Plan' },
-    { label: 'Sample' },
-  ],
-  [ROUTES.TRACKING.MODE_AIR]: [
-    { label: 'Shipment Tracking' },
-    { label: 'Air Freight' },
-  ],
-  [ROUTES.TRACKING.MODE_SEA]: [
-    { label: 'Shipment Tracking' },
-    { label: 'Sea Freight' },
-  ],
-  [ROUTES.TRACKING.STATUS_TRANSIT]: [
-    { label: 'Shipment Tracking' },
-    { label: 'In Transit' },
-  ],
-  [ROUTES.TRACKING.STATUS_ARRIVED]: [
-    { label: 'Shipment Tracking' },
-    { label: 'Arrived' },
-  ],
-  [ROUTES.SHIPPING_ADVICE]: [
-    { label: 'Shipping Advice' },
-  ],
-  [ROUTES.MASTER_DATA.CUSTOMER]: [
-    { label: 'Master Data' },
-    { label: 'End Customer' },
-  ],
-  [ROUTES.MASTER_DATA.LEAD_TIME]: [
-    { label: 'Master Data' },
-    { label: 'Transit Lead Times' },
-  ],
-  [ROUTES.MASTER_DATA.PART_OVERVIEW]: [
-    { label: 'Master Data' },
-    { label: 'Overview' },
-  ],
-  [ROUTES.MASTER_DATA.PART_ADD]: [
-    { label: 'Master Data', path: ROUTES.MASTER_DATA.PART_OVERVIEW },
-    { label: 'Add' },
-  ],
+  [ROUTES.SHIPPING_PLAN.SERIAL]: [{ label: 'Shipping Plan' }, { label: 'Serial' }],
+  [ROUTES.SHIPPING_PLAN.SAMPLE]: [{ label: 'Shipping Plan' }, { label: 'Sample' }],
+  [ROUTES.TRACKING.MODE_AIR]: [{ label: 'Shipment Tracking' }, { label: 'Air Freight' }],
+  [ROUTES.TRACKING.MODE_SEA]: [{ label: 'Shipment Tracking' }, { label: 'Sea Freight' }],
+  [ROUTES.TRACKING.STATUS_TRANSIT]: [{ label: 'Shipment Tracking' }, { label: 'In Transit' }],
+  [ROUTES.TRACKING.STATUS_ARRIVED]: [{ label: 'Shipment Tracking' }, { label: 'Arrived' }],
+  [ROUTES.SHIPPING_ADVICE]: [{ label: 'Shipping Advice' }],
+  [ROUTES.MASTER_DATA.CUSTOMER]: [{ label: 'Master Data' }, { label: 'End Customer' }],
+  [ROUTES.MASTER_DATA.LEAD_TIME]: [{ label: 'Master Data' }, { label: 'Transit Lead Times' }],
+  [ROUTES.MASTER_DATA.PART_OVERVIEW]: [{ label: 'Master Data' }, { label: 'Overview' }],
+  [ROUTES.MASTER_DATA.PART_ADD]: [{ label: 'Master Data', path: ROUTES.MASTER_DATA.PART_OVERVIEW }, { label: 'Add' }],
   [ROUTES.MASTER_DATA.PART_IMPORT]: [
     { label: 'Master Data', path: ROUTES.MASTER_DATA.PART_OVERVIEW },
     { label: 'Import' },
   ],
 };
-

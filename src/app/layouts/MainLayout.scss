@@ -19,5 +19,54 @@
     padding: 24px;
     background-color: $bg-main;
     min-height: calc(100vh - 64px);
+    .ant-breadcrumb {
+      background: transparent;
+      padding: 0;
+      margin-bottom: 20px;
+
+      // Targets all breadcrumb items (text and links)
+      .ant-breadcrumb-link,
+      .ant-breadcrumb-separator {
+        color: $text-secondary;
+        font-family: inherit;
+      }
+
+      // Specific styling for the links
+      a {
+        color: $text-secondary;
+        text-decoration: none;
+        transition: $trans-sidebar;
+        background: transparent !important;
+        padding: 0 !important;
+        border-radius: 0 !important;
+
+        &:hover {
+          color: $primary-red !important;
+          text-decoration: underline !important;
+          background: transparent !important;
+        }
+      }
+
+      // Ensure the link wrapper also has no background
+      .ant-breadcrumb-link {
+        background: transparent !important;
+        padding: 0 !important;
+        border-radius: 0 !important;
+      }
+
+      // Muted color for separators
+      .ant-breadcrumb-separator {
+        color: $text-muted;
+        margin: 0 8px;
+      }
+
+      // The active (last) item color
+      li:last-child {
+        .ant-breadcrumb-link {
+          color: $text-main;
+          font-weight: 500;
+        }
+      }
+    }
   }
 }

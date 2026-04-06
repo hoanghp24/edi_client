@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Row, Col, Form, Input, InputNumber, Button, Space, Divider, Select, Typography, Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
-import { Save, Plus, ArrowLeft, Menu, FileSpreadsheet, LayoutGrid } from 'lucide-react';
+import { Save, Plus, Menu, FileSpreadsheet, LayoutGrid } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/shared/constants';
 import './MasterData.scss';
@@ -55,7 +55,9 @@ export const PartAddEditPage: React.FC = () => {
       }
       extra={
         <Dropdown menu={{ items: menuItems }} placement="bottomRight">
-          <Button type="primary" icon={<Menu size={16} />}>Menu</Button>
+          <Button type="primary" icon={<Menu size={16} />}>
+            Menu
+          </Button>
         </Dropdown>
       }
     >
