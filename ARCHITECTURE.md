@@ -369,7 +369,6 @@ Cấu hình trong `vite.config.ts` và `tsconfig.app.json`.
 | FSD Tutorial | <https://feature-sliced.design/docs/get-started/tutorial> |
 | FSD Examples | <https://feature-sliced.design/examples> |
 | FSD GitHub | <https://github.com/feature-sliced> |
-| Steiger (FSD Linter) | <https://github.com/feature-sliced/steiger> |
 | FSD Discord | <https://discord.gg/S8MzWTUsmp> |
 | React Official Docs | <https://react.dev> |
 | Ant Design 6 | <https://ant.design/components/overview> |
