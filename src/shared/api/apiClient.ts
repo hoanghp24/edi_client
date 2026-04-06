@@ -15,13 +15,13 @@ export interface ApiError extends Error {
 
 // Override Axios methods to reflect data unpacking in the response interceptor
 interface CustomAxiosInstance extends AxiosInstance {
-  <T = any, R = T, D = any>(config: AxiosRequestConfig<D>): Promise<R>;
-  <T = any, R = T, D = any>(url: string, config?: AxiosRequestConfig<D>): Promise<R>;
-  get<T = any, R = T, D = any>(url: string, config?: AxiosRequestConfig<D>): Promise<R>;
-  post<T = any, R = T, D = any>(url: string, data?: D, config?: AxiosRequestConfig<D>): Promise<R>;
-  put<T = any, R = T, D = any>(url: string, data?: D, config?: AxiosRequestConfig<D>): Promise<R>;
-  patch<T = any, R = T, D = any>(url: string, data?: D, config?: AxiosRequestConfig<D>): Promise<R>;
-  delete<T = any, R = T, D = any>(url: string, config?: AxiosRequestConfig<D>): Promise<R>;
+  <T = unknown, R = T, D = unknown>(config: AxiosRequestConfig<D>): Promise<R>;
+  <T = unknown, R = T, D = unknown>(url: string, config?: AxiosRequestConfig<D>): Promise<R>;
+  get<T = unknown, R = T, D = unknown>(url: string, config?: AxiosRequestConfig<D>): Promise<R>;
+  post<T = unknown, R = T, D = unknown>(url: string, data?: D, config?: AxiosRequestConfig<D>): Promise<R>;
+  put<T = unknown, R = T, D = unknown>(url: string, data?: D, config?: AxiosRequestConfig<D>): Promise<R>;
+  patch<T = unknown, R = T, D = unknown>(url: string, data?: D, config?: AxiosRequestConfig<D>): Promise<R>;
+  delete<T = unknown, R = T, D = unknown>(url: string, config?: AxiosRequestConfig<D>): Promise<R>;
 }
 
 let store: AppStore;
@@ -32,7 +32,7 @@ export const injectStore = (_store: AppStore) => {
 
 // Helper: Normalize multiple error formats from different backends
 const normalizeError = (error: AxiosError): string => {
-  const data = error.response?.data as any;
+  const data = error.response?.data as { message?: string; Message?: string; title?: string } | undefined;
   const status = error.response?.status;
   return (
     data?.message ||
@@ -53,10 +53,10 @@ const apiClient = axios.create({
 let isRefreshing = false;
 let failedQueue: Array<{
   resolve: (value: unknown) => void;
-  reject: (reason?: any) => void;
+  reject: (reason?: unknown) => void;
 }> = [];
 
-const processQueue = (error: any, token: string | null = null) => {
+const processQueue = (error: Error | null, token: string | null = null) => {
   failedQueue.forEach((prom) => (error ? prom.reject(error) : prom.resolve(token)));
   failedQueue = [];
 };
@@ -78,7 +78,9 @@ apiClient.interceptors.response.use(
   },
   async (error: AxiosError) => {
     stopProgress();
-    const originalRequest = error.config as any;
+    const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
+
+    if (!originalRequest) return Promise.reject(error);
 
     if (originalRequest.url?.includes(API_ENDPOINTS.AUTH.LOGIN)) {
       return Promise.reject(new Error(normalizeError(error)));
@@ -114,10 +116,10 @@ apiClient.interceptors.response.use(
 
         originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
         return apiClient(originalRequest);
-      } catch (refreshError: any) {
-        processQueue(refreshError, null);
+      } catch (refreshError: unknown) {
+        processQueue(refreshError as Error, null);
         if (store) store.dispatch({ type: 'auth/forceLogout' });
-        return Promise.reject(new Error(normalizeError(refreshError)));
+        return Promise.reject(new Error(normalizeError(refreshError as AxiosError)));
       } finally {
         isRefreshing = false;
       }

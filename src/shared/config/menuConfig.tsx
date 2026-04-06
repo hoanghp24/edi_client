@@ -65,13 +65,8 @@ export const menuItems: MenuItem[] = [
       { key: ROUTES.MASTER_DATA.CUSTOMER, label: 'End Customer' },
       { key: ROUTES.MASTER_DATA.LEAD_TIME, label: 'Transit Lead Time' },
       {
-        key: MENU_KEYS.MASTER_DATA_PART,
-        label: 'Part',
-        children: [
-          { key: ROUTES.MASTER_DATA.PART_OVERVIEW, label: 'Master Data Overview' },
-          { key: ROUTES.MASTER_DATA.PART_ADD, label: 'Manual Add' },
-          { key: ROUTES.MASTER_DATA.PART_IMPORT, label: 'Import by file' },
-        ],
+        key: ROUTES.MASTER_DATA.PART_OVERVIEW,
+        label: 'Master Data Overview',
       },
     ],
   },

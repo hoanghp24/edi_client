@@ -39,8 +39,9 @@ export const useAuth = () => {
     try {
       await loginMutation.mutateAsync(credentials);
       return { success: true };
-    } catch (error: any) {
-      return { success: false, error: error.message };
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      return { success: false, error: errorMessage };
     }
   };
 
@@ -59,7 +60,7 @@ export const useAuth = () => {
     logout: handleLogout,
     isLoggingIn: loginMutation.isPending,
     isLoggingOut: logoutMutation.isPending,
-    loginError: loginMutation.error ? (loginMutation.error as any).message : reduxError,
-    logoutError: logoutMutation.error ? (logoutMutation.error as any).message : null,
+    loginError: loginMutation.error instanceof Error ? loginMutation.error.message : reduxError,
+    logoutError: logoutMutation.error instanceof Error ? logoutMutation.error.message : null,
   };
 };

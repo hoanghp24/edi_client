@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '@/features/auth';
 
 import { Login } from '@/pages/login';
+import { MasterDataOverviewPage, PartAddEditPage, PartImportPage } from '@/pages/master-data';
 import { MainLayout } from '@/app/layouts/MainLayout';
 import { Placeholder } from '@/shared/ui';
 
@@ -27,11 +28,11 @@ export const AppRoutes = () => {
           <Route path={ROUTES.TRACKING.STATUS_TRANSIT} element={<Placeholder title="Tracking In Transit" />} />
           <Route path={ROUTES.TRACKING.STATUS_ARRIVED} element={<Placeholder title="Tracking Arrived" />} />
           <Route path={ROUTES.SHIPPING_ADVICE} element={<Placeholder title="Shipping Advice" />} />
-          <Route path={ROUTES.MASTER_DATA.CUSTOMER} element={<Placeholder title="Master Data End Customer" />} />
-          <Route path={ROUTES.MASTER_DATA.LEAD_TIME} element={<Placeholder title="Master Data Transit Lead Time" />} />
-          <Route path={ROUTES.MASTER_DATA.PART_OVERVIEW} element={<Placeholder title="Part Overview" />} />
-          <Route path={ROUTES.MASTER_DATA.PART_ADD} element={<Placeholder title="Master Data Manual Add" />} />
-          <Route path={ROUTES.MASTER_DATA.PART_IMPORT} element={<Placeholder title="Master Data Import by file" />} />
+          <Route path={ROUTES.MASTER_DATA.CUSTOMER} element={<Placeholder title="End Customer Registry" />} />
+          <Route path={ROUTES.MASTER_DATA.LEAD_TIME} element={<Placeholder title="Transit Lead Times" />} />
+          <Route path={ROUTES.MASTER_DATA.PART_OVERVIEW} element={<MasterDataOverviewPage />} />
+          <Route path={ROUTES.MASTER_DATA.PART_ADD} element={<PartAddEditPage />} />
+          <Route path={ROUTES.MASTER_DATA.PART_IMPORT} element={<PartImportPage />} />
         </Route>
       </Route>
 
