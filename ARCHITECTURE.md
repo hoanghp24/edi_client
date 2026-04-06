@@ -358,3 +358,23 @@ import { useAuth } from '@/features/auth';
 ```
 
 Cấu hình trong `vite.config.ts` và `tsconfig.app.json`.
+
+---
+
+## Tài liệu tham khảo
+
+| Tài liệu | Link |
+| --- | --- |
+| FSD Official Docs | <https://feature-sliced.design/docs/get-started/overview> |
+| FSD Tutorial | <https://feature-sliced.design/docs/get-started/tutorial> |
+| FSD Examples | <https://feature-sliced.design/examples> |
+| FSD GitHub | <https://github.com/feature-sliced> |
+| Steiger (FSD Linter) | <https://github.com/feature-sliced/steiger> |
+| FSD Discord | <https://discord.gg/S8MzWTUsmp> |
+| React Official Docs | <https://react.dev> |
+| Ant Design 6 | <https://ant.design/components/overview> |
+| Redux Toolkit | <https://redux-toolkit.js.org> |
+| TanStack React Query | <https://tanstack.com/query/latest> |
+| React Router v7 | <https://reactrouter.com> |
+| Vite | <https://vite.dev> |
+| Zod | <https://zod.dev> |
