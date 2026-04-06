@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { Layout } from "antd";
-import { useLocation, useNavigate } from "react-router-dom";
-import { menuItems } from "@/shared/config";
-import { MenuItem } from "@/shared/types";
-import { SidebarMenuItem } from "./SidebarMenuItem";
-import vacLogo from "@/shared/assets/VAC_Logo.png";
+import React, { useState, useEffect } from 'react';
+import { Layout } from 'antd';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { menuItems } from '@/shared/config';
+import { MenuItem } from '@/shared/types';
+import { SidebarMenuItem } from './SidebarMenuItem';
+import vacLogo from '@/shared/assets/VAC_Logo.png';
 
 const { Sider } = Layout;
 
-import "./Sidebar.scss";
+import './Sidebar.scss';
 
 interface SidebarProps {
   collapsed: boolean;
@@ -34,18 +34,19 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed }) => {
   useEffect(() => {
     const parentKeys = findParentKeys(menuItems as MenuItem[], location.pathname);
     if (parentKeys.length > 0) {
-      setOpenKeys((prev) => {
-        const next = new Set(prev);
-        parentKeys.forEach((key) => next.add(key));
-        return next;
-      });
+      setOpenKeys(new Set([...openKeys, ...parentKeys]));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
   const toggleOpen = (key: string) => {
     setOpenKeys((prev) => {
       const next = new Set(prev);
-      next.has(key) ? next.delete(key) : next.add(key);
+      if (next.has(key)) {
+        next.delete(key);
+      } else {
+        next.add(key);
+      }
       return next;
     });
   };
@@ -61,12 +62,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed }) => {
       className="dashboard-sider"
     >
       <div className="sider-container">
-        <div className={`logo-area ${collapsed ? "sidebar-collapsed" : ""}`}>
-          <img 
-            src={vacLogo} 
-            alt="Action Composites" 
-            className="logo-image"
-          />
+        <div className={`logo-area ${collapsed ? 'sidebar-collapsed' : ''}`}>
+          <img src={vacLogo} alt="Action Composites" className="logo-image" />
           {!collapsed && (
             <span className="brand-text">
               SHIPPING <span className="brand-accent">PLAN</span>
@@ -74,7 +71,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed }) => {
           )}
         </div>
 
-        <div className={`menu-list-wrapper ${collapsed ? "sidebar-collapsed" : ""}`}>
+        <div className={`menu-list-wrapper ${collapsed ? 'sidebar-collapsed' : ''}`}>
           <ul className="sidebar-menu">
             {(menuItems as MenuItem[]).map((item) => (
               <SidebarMenuItem

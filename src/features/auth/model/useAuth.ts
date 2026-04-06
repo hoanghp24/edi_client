@@ -21,7 +21,7 @@ export const useAuth = () => {
       storage.setRefreshToken(data.refreshToken);
       storage.setUserData(data.User);
       dispatch(setCredentials(data));
-    }
+    },
   });
 
   const logoutMutation = useMutation({
@@ -32,7 +32,7 @@ export const useAuth = () => {
     onSettled: () => {
       dispatch(logout());
       storage.clear();
-    }
+    },
   });
 
   const login = async (credentials: LoginRequest): Promise<LoginResult> => {

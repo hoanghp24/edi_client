@@ -28,4 +28,3 @@ export interface LoginRequest {
 export interface RefreshRequest {
   refreshToken: string;
 }
-

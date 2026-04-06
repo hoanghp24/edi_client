@@ -35,13 +35,15 @@
         }
       }
 
-      &.active, &.parent-active {
+      &.active,
+      &.parent-active {
         color: $text-light !important;
         background: $primary-red !important;
         box-shadow: 0 4px 12px rgba($primary-red, 0.3) !important;
         border-radius: $radius-base !important;
 
-        .menu-icon, .menu-arrow {
+        .menu-icon,
+        .menu-arrow {
           color: $text-light !important;
         }
       }
@@ -93,7 +95,8 @@
           box-shadow: none !important;
         }
 
-        &.active, &.parent-active {
+        &.active,
+        &.parent-active {
           background: rgba($primary-red, 0.18) !important;
           box-shadow: none !important;
           color: $text-light !important;
@@ -110,7 +113,8 @@
           margin-left: 58px !important;
           border-radius: $radius-base !important;
 
-          &.active, &.parent-active {
+          &.active,
+          &.parent-active {
             background: rgba($primary-red, 0.6) !important;
             box-shadow: none !important;
             color: $text-light !important;
@@ -125,7 +129,7 @@
 
       .sidebar-menu-item {
         &::before {
-          content: "";
+          content: '';
           position: absolute;
           left: 26px;
           top: 0;
@@ -138,7 +142,7 @@
         }
 
         &:not(:last-child)::after {
-          content: "";
+          content: '';
           position: absolute;
           left: 26px;
           top: 24px;
@@ -149,11 +153,13 @@
       }
 
       .sidebar-submenu .sidebar-menu-item {
-        &::before { 
+        &::before {
           left: 46px;
           width: 12px;
         }
-        &::after { left: 46px; }
+        &::after {
+          left: 46px;
+        }
       }
     }
   }
@@ -171,7 +177,8 @@
     position: relative;
     border-radius: $radius-base !important;
 
-    .menu-label, .menu-arrow {
+    .menu-label,
+    .menu-arrow {
       opacity: 0;
       width: 0;
       overflow: hidden;
@@ -190,7 +197,10 @@
   .sidebar-submenu {
     max-height: 0 !important;
     .sidebar-menu-item {
-      &::before, &::after { display: none !important; }
+      &::before,
+      &::after {
+        display: none !important;
+      }
     }
   }
 }
@@ -209,7 +219,7 @@
   .sidebar-popover-container {
     .sidebar-menu {
       padding: 6px 0;
-      
+
       .sidebar-menu-item-title {
         margin: 2px 6px !important;
         padding: 0 12px !important;
@@ -240,7 +250,8 @@
           transition: all 0.2s ease;
         }
 
-        &.active, &.parent-active {
+        &.active,
+        &.parent-active {
           .menu-arrow {
             opacity: 1;
             color: #ffffff !important;
@@ -250,7 +261,8 @@
 
       .sidebar-menu-item.in-popover {
         &.level-2 .sidebar-menu-item-title {
-          &.active, &.parent-active {
+          &.active,
+          &.parent-active {
             background: rgba($primary-red, 0.18) !important;
             color: #ffffff !important;
             box-shadow: none !important;
@@ -259,7 +271,8 @@
         }
 
         &.level-3 .sidebar-menu-item-title {
-          &.active, &.parent-active {
+          &.active,
+          &.parent-active {
             background: rgba($primary-red, 0.6) !important;
             color: #ffffff !important;
             box-shadow: none !important;

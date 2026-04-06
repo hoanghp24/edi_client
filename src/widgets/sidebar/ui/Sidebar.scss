@@ -27,7 +27,7 @@
     gap: 12px;
     height: $header-height;
     transform: translateX(-10px);
-    
+
     .logo-image {
       height: 40px;
       width: 40px;
@@ -46,7 +46,7 @@
         color: $primary-red;
       }
     }
-    
+
     &.sidebar-collapsed {
       padding: 0;
       justify-content: center;

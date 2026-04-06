@@ -13,7 +13,7 @@ const result = envSchema.safeParse({
 });
 
 if (!result.success) {
-  console.error('❌ Invalid Environment Variables:', result.error.format());
+  console.error('Invalid Environment Variables:', result.error.format());
   throw new Error('Invalid environment variables. Please check your .env file.');
 }
 

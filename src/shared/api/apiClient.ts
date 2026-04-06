@@ -34,7 +34,14 @@ export const injectStore = (_store: AppStore) => {
 const normalizeError = (error: AxiosError): string => {
   const data = error.response?.data as any;
   const status = error.response?.status;
-  return data?.message || data?.Message || (status ? HTTP_ERROR_MESSAGES[status] : null) || data?.title || error.message || DEFAULT_ERROR_MESSAGE;
+  return (
+    data?.message ||
+    data?.Message ||
+    (status ? HTTP_ERROR_MESSAGES[status] : null) ||
+    data?.title ||
+    error.message ||
+    DEFAULT_ERROR_MESSAGE
+  );
 };
 
 const apiClient = axios.create({
@@ -50,7 +57,7 @@ let failedQueue: Array<{
 }> = [];
 
 const processQueue = (error: any, token: string | null = null) => {
-  failedQueue.forEach((prom) => error ? prom.reject(error) : prom.resolve(token));
+  failedQueue.forEach((prom) => (error ? prom.reject(error) : prom.resolve(token)));
   failedQueue = [];
 };
 
@@ -79,11 +86,10 @@ apiClient.interceptors.response.use(
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
-        return new Promise((resolve, reject) => failedQueue.push({ resolve, reject }))
-          .then(token => {
-            originalRequest.headers.Authorization = `Bearer ${token}`;
-            return apiClient(originalRequest);
-          });
+        return new Promise((resolve, reject) => failedQueue.push({ resolve, reject })).then((token) => {
+          originalRequest.headers.Authorization = `Bearer ${token}`;
+          return apiClient(originalRequest);
+        });
       }
 
       originalRequest._retry = true;
@@ -98,14 +104,14 @@ apiClient.interceptors.response.use(
 
       try {
         const { data } = await axios.post<AuthResponse>(
-          `${import.meta.env.VITE_API_URL}${API_ENDPOINTS.AUTH.REFRESH}`, 
+          `${import.meta.env.VITE_API_URL}${API_ENDPOINTS.AUTH.REFRESH}`,
           { refreshToken }
         );
 
         storage.setAccessToken(data.accessToken);
         storage.setRefreshToken(data.refreshToken);
         processQueue(null, data.accessToken);
-        
+
         originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
         return apiClient(originalRequest);
       } catch (refreshError: any) {
@@ -116,7 +122,7 @@ apiClient.interceptors.response.use(
         isRefreshing = false;
       }
     }
-    
+
     const errorMessage = normalizeError(error);
 
     if (error.response?.status !== 401 && !originalRequest.url?.includes(API_ENDPOINTS.AUTH.LOGIN)) {

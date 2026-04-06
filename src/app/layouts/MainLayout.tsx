@@ -15,10 +15,10 @@ const { Content } = Layout;
 
 export const MainLayout = () => {
   useRouteProgress();
-  usePageTitle(); 
+  usePageTitle();
   const dispatch = useDispatch();
   const collapsed = useSelector((state: RootState) => state.ui.sidebarCollapsed);
-  
+
   const setCollapsed = (val: boolean) => dispatch(setSidebarCollapsed(val));
   const { logout } = useAuth();
   const location = useLocation();
@@ -31,11 +31,7 @@ export const MainLayout = () => {
     <Layout className={`main-layout ${collapsed ? 'sidebar-collapsed' : ''}`}>
       <Sidebar collapsed={collapsed} />
       <Layout className="layout-right">
-        <Header 
-          collapsed={collapsed} 
-          setCollapsed={setCollapsed} 
-          onLogout={handleLogout} 
-        />
+        <Header collapsed={collapsed} setCollapsed={setCollapsed} onLogout={handleLogout} />
         <Content className="main-content">
           <AnimatePresence mode="wait">
             <motion.div
@@ -43,7 +39,7 @@ export const MainLayout = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.25, ease: "easeOut" }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
             >
               <Outlet />
             </motion.div>

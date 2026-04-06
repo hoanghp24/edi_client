@@ -1,4 +1,3 @@
-
 // HTTP ERROR MESSAGES
 export const HTTP_ERROR_MESSAGES: Record<number, string> = {
   400: 'Invalid request, please check your data',

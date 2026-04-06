@@ -21,16 +21,13 @@ const initialState: AuthState = {
   isAuthenticated: false,
 };
 
-export const logoutThunk = createAsyncThunk(
-  'auth/logout',
-  async (_, { getState }) => {
-    const state = getState() as { auth: AuthState };
-    const refreshToken = state.auth.refreshToken;
-    if (refreshToken) await authApi.logout(refreshToken);
-    storage.clear();
-    return;
-  }
-);
+export const logoutThunk = createAsyncThunk('auth/logout', async (_, { getState }) => {
+  const state = getState() as { auth: AuthState };
+  const refreshToken = state.auth.refreshToken;
+  if (refreshToken) await authApi.logout(refreshToken);
+  storage.clear();
+  return;
+});
 
 const authSlice = createSlice({
   name: 'auth',
@@ -68,16 +65,15 @@ const authSlice = createSlice({
     updateUser: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
       storage.setUserData(action.payload);
-    }
+    },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(logoutThunk.fulfilled, (state) => {
-        state.user = null;
-        state.accessToken = null;
-        state.refreshToken = null;
-        state.isAuthenticated = false;
-      });
+    builder.addCase(logoutThunk.fulfilled, (state) => {
+      state.user = null;
+      state.accessToken = null;
+      state.refreshToken = null;
+      state.isAuthenticated = false;
+    });
   },
 });
 

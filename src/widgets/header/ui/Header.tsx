@@ -1,11 +1,10 @@
-import React from "react";
-import { Layout, Button, Typography } from "antd";
-import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { UserDropdown } from "./UserDropdown";
-import "./Header.scss";
+import React from 'react';
+import { Layout, Button } from 'antd';
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { UserDropdown } from './UserDropdown';
+import './Header.scss';
 
 const { Header: AntHeader } = Layout;
-const { Text } = Typography;
 
 interface HeaderProps {
   collapsed: boolean;
@@ -20,7 +19,9 @@ export const Header: React.FC<HeaderProps> = ({ collapsed, setCollapsed, onLogou
         <Button
           type="text"
           id="sidebar-toggle-button"
-          icon={collapsed ? <MenuUnfoldOutlined style={{ fontSize: 20 }} /> : <MenuFoldOutlined style={{ fontSize: 20 }} />}
+          icon={
+            collapsed ? <MenuUnfoldOutlined style={{ fontSize: 20 }} /> : <MenuFoldOutlined style={{ fontSize: 20 }} />
+          }
           onClick={() => setCollapsed(!collapsed)}
           className="collapse-button"
         />
@@ -29,12 +30,10 @@ export const Header: React.FC<HeaderProps> = ({ collapsed, setCollapsed, onLogou
           <span className="brand-title">
             ACTION <span className="brand-red">COMPOSITES</span>
           </span>
-          <span className="brand-subtitle">
-            HIGHTECH INDUSTRIES
-          </span>
+          <span className="brand-subtitle">HIGHTECH INDUSTRIES</span>
         </div>
       </div>
-      
+
       <div className="header-right" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
         <UserDropdown onLogout={onLogout} />
       </div>

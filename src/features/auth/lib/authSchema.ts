@@ -1,18 +1,20 @@
 import { z, ZodType } from 'zod';
 import { User } from '@/shared/types';
 
-export const UserSchema: ZodType<User> = z.lazy(() => z.object({
-  userName: z.string(),
-  title: z.string().nullable(),
-  email: z.string(),
-  displayName: z.string().nullable(),
-  manager: UserSchema.nullable(),
-  reportTo: z.string().nullable(),
-  department: z.string().nullable(),
-  userGroup: z.string().nullable(),
-  role: z.string().optional(),
-  permissions: z.array(z.string()).optional(),
-}));
+export const UserSchema: ZodType<User> = z.lazy(() =>
+  z.object({
+    userName: z.string(),
+    title: z.string().nullable(),
+    email: z.string(),
+    displayName: z.string().nullable(),
+    manager: UserSchema.nullable(),
+    reportTo: z.string().nullable(),
+    department: z.string().nullable(),
+    userGroup: z.string().nullable(),
+    role: z.string().optional(),
+    permissions: z.array(z.string()).optional(),
+  })
+);
 
 export const AuthResponseSchema = z.object({
   User: UserSchema,

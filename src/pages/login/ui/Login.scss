@@ -24,8 +24,8 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: 
-      linear-gradient(90deg, rgba(2, 4, 10, 0.80) 0%, rgba(2, 4, 10, 0.6) 100%),
+    background:
+      linear-gradient(90deg, rgba(2, 4, 10, 0.8) 0%, rgba(2, 4, 10, 0.6) 100%),
       url('../../../shared/assets/login-background.jpg') no-repeat center center fixed;
     background-size: cover;
     opacity: 0.85;
@@ -53,7 +53,7 @@
 
   .login-side-info {
     flex: 1;
-    max-width: 650px; 
+    max-width: 650px;
     will-change: transform, opacity;
     backface-visibility: hidden;
 
@@ -136,11 +136,11 @@
     background: rgba(248, 250, 252, 0.98) !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    border-radius: $radius-base !important; 
+    border-radius: $radius-base !important;
     border: 1px solid rgba(255, 255, 255, 0.4) !important;
-    width: 440px; 
+    width: 440px;
     padding: 12px 12px !important;
-    box-shadow: 
+    box-shadow:
       0 40px 100px rgba(0, 0, 0, 0.6),
       0 0 0 1px rgba(255, 255, 255, 0.1) inset !important;
     transition: box-shadow 0.3s ease;
@@ -187,7 +187,7 @@
 
         .ant-form-item-label {
           padding-bottom: 8px !important;
-          
+
           label {
             color: $text-secondary !important;
             font-size: 13px !important;
@@ -206,7 +206,8 @@
         padding: 14px 20px !important;
         transition: $trans-main;
 
-        &:hover, &-focused {
+        &:hover,
+        &-focused {
           border-color: $primary-red !important;
         }
 
@@ -244,7 +245,7 @@
       margin-top: 16px;
       padding-top: 16px;
       text-align: center;
-      
+
       .login-footer-text {
         color: $text-secondary !important;
         font-size: 12px;

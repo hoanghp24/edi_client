@@ -1,16 +1,7 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import { 
-  persistStore, 
-  persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-} from 'redux-persist';
+import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import authReducer from '@/features/auth/model/authSlice';
+import { authReducer } from '@/features/auth';
 import uiReducer from './uiSlice';
 
 const rootReducer = combineReducers({
@@ -22,7 +13,7 @@ const persistConfig = {
   key: 'root',
   version: 1,
   storage,
-  whitelist: ['auth', 'ui'], 
+  whitelist: ['auth', 'ui'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
