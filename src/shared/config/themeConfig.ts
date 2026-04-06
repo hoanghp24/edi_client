@@ -16,15 +16,20 @@ export const themeConfig: ThemeConfig = {
     },
     Button: {
       borderRadius: 8,
-      controlHeight: 36,
+      controlHeight: 40,
+      controlHeightLG: 44,
       fontWeight: 600,
     },
     Card: {
       borderRadiusLG: 8,
     },
+    Table: {
+      headerBorderRadius: 0,
+    },
     Input: {
       borderRadius: 8,
       controlHeight: 40,
+      controlHeightLG: 44,
     },
   },
 };

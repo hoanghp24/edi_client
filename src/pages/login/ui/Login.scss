@@ -203,7 +203,6 @@
         background: #ffffff !important;
         border: 2px solid $border-color !important;
         border-radius: $radius-base !important;
-        padding: 14px 20px !important;
         transition: $trans-main;
 
         &:hover,
@@ -223,7 +222,6 @@
       }
 
       .login-submit-btn {
-        height: 50px !important;
         border-radius: $radius-base !important;
         font-weight: 800 !important;
         font-size: 18px !important;

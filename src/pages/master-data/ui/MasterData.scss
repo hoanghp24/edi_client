@@ -1,0 +1,57 @@
+.master-data-page {
+  padding-bottom: 24px;
+}
+
+.part-add-edit-page {
+  .ant-divider-horizontal.ant-divider-with-text-left {
+    &::before {
+      width: 0;
+    }
+    .ant-divider-inner-text {
+      padding-left: 0;
+      color: #722ed1; // Purple accent for better look than just red
+      font-weight: 600;
+      font-size: 16px;
+    }
+  }
+
+  // Matching the red headers from screenshot if preferred
+  /*
+  .ant-divider-inner-text {
+    color: #cf1322;
+  }
+  */
+
+  .ant-form-item-label > label {
+    font-weight: 500;
+    color: #595959;
+  }
+}
+
+.part-import-page {
+  .ant-card {
+    transition: all 0.3s;
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+  }
+}
+
+// Special styling for the red/white table headers from screenshot
+.custom-detail-table {
+  border-collapse: collapse;
+  width: 100%;
+
+  th {
+    background-color: #cf1322;
+    color: white;
+    font-weight: 500;
+    padding: 8px;
+    border: 1px solid #ffccc7;
+  }
+
+  td {
+    border: 1px solid #f0f0f0;
+    padding: 8px;
+  }
+}

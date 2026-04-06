@@ -13,7 +13,7 @@ export const storage = {
   getRefreshToken: () => localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN),
   removeRefreshToken: () => localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN),
 
-  setUserData: (data: any) => localStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(data)),
+  setUserData: (data: unknown) => localStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(data)),
   getUserData: () => {
     const data = localStorage.getItem(STORAGE_KEYS.USER_DATA);
     return data ? JSON.parse(data) : null;

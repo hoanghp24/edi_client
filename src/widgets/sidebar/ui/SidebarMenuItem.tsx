@@ -96,7 +96,7 @@ export const SidebarMenuItem: React.FC<{
                   item={child}
                   selectedKey={selectedKey}
                   collapsed={collapsed}
-                  openKeys={openKeys} 
+                  openKeys={openKeys}
                   toggleOpen={toggleOpen}
                   onNavigate={onNavigate}
                   level={level + 1}

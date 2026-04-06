@@ -1,0 +1,18 @@
+@use '../../../shared/styles/theme' as *;
+
+.part-master-table {
+  &,
+  .ant-table,
+  .ant-table-container,
+  .ant-table-container table > thead > tr:first-child > *:first-child,
+  .ant-table-container table > thead > tr:first-child > *:last-child,
+  .ant-table-thead > tr > th,
+  .ant-table-thead > tr > td {
+    border-radius: 0 !important;
+    color: $header-color !important;
+  }
+
+  .ant-table-thead > tr > th {
+    background-color: #f4f6f8 !important;
+  }
+ }
